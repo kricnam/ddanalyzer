@@ -19,10 +19,10 @@
 // See LSC.cpp for the implementation of this class
 //
 
-class CLSCApp : public CWinApp
+class CAnalyzerApp : public CWinApp
 {
 public:
-	CLSCApp();
+	CAnalyzerApp();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

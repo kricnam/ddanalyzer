@@ -14,8 +14,8 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CLSCDlg dialog
 
-CLSCDlg::CLSCDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CLSCDlg::IDD, pParent)
+CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CMainDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CLSCDlg)
 	//}}AFX_DATA_INIT
@@ -23,14 +23,14 @@ CLSCDlg::CLSCDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CLSCDlg::DoDataExchange(CDataExchange* pDX)
+void CMainDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CLSCDlg)
 	//}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CLSCDlg, CDialog)
+BEGIN_MESSAGE_MAP(CMainDlg, CDialog)
 	//{{AFX_MSG_MAP(CLSCDlg)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLSCDlg message handlers
 
-BOOL CLSCDlg::OnInitDialog()
+BOOL CMainDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -86,7 +86,7 @@ BOOL CLSCDlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CLSCDlg::OnPaint() 
+void CMainDlg::OnPaint() 
 {
 	if (IsIconic())
 	{
@@ -113,12 +113,12 @@ void CLSCDlg::OnPaint()
 
 // The system calls this to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CLSCDlg::OnQueryDragIcon()
+HCURSOR CMainDlg::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
 }
 
-BOOL CLSCDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CMainDlg::PreTranslateMessage(MSG* pMsg) 
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -137,7 +137,7 @@ BOOL CLSCDlg::PreTranslateMessage(MSG* pMsg)
 }
 
 
-void CLSCDlg::OnOpenDlg(WPARAM wParam, LPARAM lParam)
+void CMainDlg::OnOpenDlg(WPARAM wParam, LPARAM lParam)
 {
 	m_FileSettingDlg.ShowWindow(SW_HIDE);
 	m_DataCollectionDlg.ShowWindow(SW_HIDE);
@@ -202,7 +202,7 @@ void CLSCDlg::OnOpenDlg(WPARAM wParam, LPARAM lParam)
 	CenterWindow();
 }
 
-void CLSCDlg::OnClose() 
+void CMainDlg::OnClose() 
 {
 	CString strTitle;
 	
@@ -222,7 +222,7 @@ void CLSCDlg::OnClose()
 	}
 }
 
-void CLSCDlg::OnDestroy() 
+void CMainDlg::OnDestroy() 
 {
 	CDialog::OnDestroy();
 	
