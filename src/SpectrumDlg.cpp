@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "LSC.h"
+#include "Analyzer.h"
 #include "Config.h"
 #include "SpectrumDlg.h"
 #include "SelectList.h"

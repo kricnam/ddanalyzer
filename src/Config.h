@@ -8,8 +8,9 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-
 #define CONF_FILENAME "config.ini"
+
+#include "stdafx.h"
 
 class Config
 {

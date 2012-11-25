@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "lsc.h"
+#include "Analyzer.h"
 #include "AWSFile.h"
 #include "Config.h"
 #include <math.h>
