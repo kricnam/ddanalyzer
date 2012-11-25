@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // FileSettingDlg.h : header file
 //
-extern CLSCApp theApp;
+extern CAnalyzerApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 // CFileSettingDlg dialog
 

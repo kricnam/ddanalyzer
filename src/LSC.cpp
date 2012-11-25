@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CLSCApp
 
-BEGIN_MESSAGE_MAP(CLSCApp, CWinApp)
+BEGIN_MESSAGE_MAP(CAnalyzerApp, CWinApp)
 	//{{AFX_MSG_MAP(CLSCApp)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
@@ -25,7 +25,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLSCApp construction
 
-CLSCApp::CLSCApp()
+CAnalyzerApp::CAnalyzerApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
@@ -34,12 +34,12 @@ CLSCApp::CLSCApp()
 /////////////////////////////////////////////////////////////////////////////
 // The one and only CLSCApp object
 
-CLSCApp theApp;
+CAnalyzerApp theApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CLSCApp initialization
 
-BOOL CLSCApp::InitInstance()
+BOOL CAnalyzerApp::InitInstance()
 {
 	AfxEnableControlContainer();
 
@@ -54,7 +54,7 @@ BOOL CLSCApp::InitInstance()
 	Enable3dControlsStatic();	// Call this when linking to MFC statically
 #endif
 	SetRegistryKey("Aloka");
-	CLSCDlg dlg;
+	CMainDlg dlg;
 	m_pMainWnd = &dlg;
 	int nResponse = dlg.DoModal();
 	if (nResponse == IDOK)

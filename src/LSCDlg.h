@@ -17,12 +17,12 @@
 
 
 
-class CLSCDlg : public CDialog
+class CMainDlg : public CDialog
 {
 // Construction
 public:
 	void OnOpenDlg(WPARAM wParam, LPARAM lParam);
-	CLSCDlg(CWnd* pParent = NULL);	// standard constructor
+	CMainDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CLSCDlg)
