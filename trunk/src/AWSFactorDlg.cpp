@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "LSC.h"
+#include "Analyzer.h"
 #include "AWSFactorDlg.h"
 #include "Config.h"
 #include <math.h>

@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "LSC.h"
+#include "Analyzer.h"
 #include "FileSettingDlg.h"
 #include "EnumSerial.h"
 

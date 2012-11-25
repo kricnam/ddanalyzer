@@ -4,7 +4,7 @@
  *  Created on: 2010-1-9
  *      Author: mxx
  */
-#include <stdafx.h>
+
 #include "Config.h"
 #include <stdio.h>
 #include <stdlib.h>

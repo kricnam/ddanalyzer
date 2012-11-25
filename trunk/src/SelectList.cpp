@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "lsc.h"
+#include "Analyzer.h"
 #include "SelectList.h"
 
 #ifdef _DEBUG

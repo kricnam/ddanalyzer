@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "lsc.h"
+#include "Analyzer.h"
 #include "DataFile.h"
 
 #ifdef _DEBUG

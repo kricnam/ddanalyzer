@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "lsc.h"
+#include "Analyzer.h"
 #include "SerialPort.h"
 
 #ifdef _DEBUG

@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "LSC.h"
-#include "LSCDlg.h"
+#include "Analyzer.h"
+#include "MainDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
