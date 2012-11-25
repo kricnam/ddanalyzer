@@ -29,7 +29,7 @@
 ************************************************************************/
 
 // For MFC
-#include <stdafx.h>
+#include "stdafx.h"
 
 // The next 3 includes are needed for serial port enumeration
 #include <objbase.h>
