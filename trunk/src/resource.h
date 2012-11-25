@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
-// Used by LSC.rc
+// Used by Analyzer.rc
 //
 #define IDD_LSC_DIALOG                  102
 #define IDR_MAINFRAME                   128

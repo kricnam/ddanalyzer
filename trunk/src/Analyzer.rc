@@ -37,15 +37,6 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_LSC_DIALOG DIALOGEX 0, 0, 407, 238
-STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | 
-    WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_APPWINDOW
-CAPTION "LSC"
-FONT 10, "Microsoft Sans Serif", 0, 0, 0x1
-BEGIN
-END
-
 IDD_DIALOG_DATA_COLLECTION DIALOGEX 0, 0, 345, 152
 STYLE WS_CHILD
 EXSTYLE WS_EX_TRANSPARENT
@@ -79,44 +70,9 @@ BEGIN
                     SS_CENTERIMAGE | WS_BORDER | NOT WS_GROUP
 END
 
-IDD_DIALOG_FILE_SETTING DIALOG DISCARDABLE  0, 0, 354, 223
-STYLE WS_CHILD
-FONT 11, "Microsoft Sans Serif"
-BEGIN
-    CONTROL         "",IDC_COMBO_COMNO,"ComboBoxEx32",CBS_DROPDOWN | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,30,28,44,30
-    PUSHBUTTON      "&Config",IDC_BUTTON_COMCONF,76,26,21,14,NOT WS_VISIBLE
-    COMBOBOX        IDC_COMBO_MYNO,123,26,26,209,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Yes",IDC_RADIO_COLLECTION_YES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP,206,26,25,10
-    CONTROL         "No",IDC_RADIO__COLLECTION_NO,"Button",
-                    BS_AUTORADIOBUTTON | BS_VCENTER,236,26,25,10
-    EDITTEXT        IDC_EDIT_EXT,301,26,22,12,ES_RIGHT | ES_AUTOHSCROLL | 
-                    ES_NUMBER | WS_GROUP
-    EDITTEXT        IDC_EDIT_FILENAME,136,46,128,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BUTTON_OPEN_FILEDIA,266,45,18,13
-    PUSHBUTTON      "&Set",IDC_BUTTON_SET,288,44,47,15
-    PUSHBUTTON      "&Data collection",IDC_BUTTON_DATA_COLLECTION,19,50,65,
-                    15
-    CONTROL         "Spin1",IDC_SPIN_EXT,"msctls_updown32",UDS_ARROWKEYS,325,
-                    25,10,14
-    GROUPBOX        "",IDC_STATIC,92,14,249,50
-    LTEXT           "MY No.",IDC_STATIC,97,27,24,10,NOT WS_GROUP
-    LTEXT           "Data collection",IDC_STATIC,153,27,49,8,SS_CENTERIMAGE | 
-                    NOT WS_GROUP
-    LTEXT           "Extension",IDC_STATIC,265,27,34,8,NOT WS_GROUP
-    LTEXT           "File Name",IDC_STATIC,97,47,37,8,NOT WS_GROUP
-    CONTROL         "List1",IDC_LIST_SET,"SysListView32",LVS_REPORT | 
-                    WS_BORDER | WS_TABSTOP,14,85,327,130
-    CONTROL         "File setting list",IDC_STATIC,"Static",SS_SIMPLE,16,70,
-                    61,10
-    GROUPBOX        "COM Port",IDC_STATIC,15,17,74,29
-END
-
 IDD_DIALOG_SPECTRUM DIALOGEX 0, 0, 420, 270
 STYLE WS_CHILD
-FONT 11, "Microsoft Sans Serif"
+FONT 11, "Microsoft Sans Serif", 0, 0, 0x1
 BEGIN
     LTEXT           "Curve",IDC_STATIC,15,206,21,8,NOT WS_GROUP
     EDITTEXT        IDC_EDIT_FILENAME,42,205,136,12,ES_AUTOHSCROLL | 
@@ -182,7 +138,7 @@ END
 
 IDD_DIALOG_AWS_FACTOR DIALOGEX 0, 0, 462, 267
 STYLE WS_CHILD
-FONT 10, "Microsoft Sans Serif"
+FONT 10, "Microsoft Sans Serif", 0, 0, 0x1
 BEGIN
     PUSHBUTTON      "Spectru&m",IDC_BUTTON_SPECTRUM,405,229,50,14
     LTEXT           "A-ch",IDC_STATIC,28,30,17,8,NOT WS_GROUP
@@ -279,28 +235,12 @@ BEGIN
         BOTTOMMARGIN, 93
     END
 
-    IDD_LSC_DIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 400
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 231
-    END
-
     IDD_DIALOG_DATA_COLLECTION, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 338
         TOPMARGIN, 7
         BOTTOMMARGIN, 145
-    END
-
-    IDD_DIALOG_FILE_SETTING, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 347
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 215
     END
 
     IDD_DIALOG_SPECTRUM, DIALOG
@@ -317,6 +257,103 @@ BEGIN
         RIGHTMARGIN, 455
         TOPMARGIN, 7
         BOTTOMMARGIN, 260
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\LSC.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LSC_DIALOG DIALOGEX 0, 0, 407, 238
+STYLE DS_MODALFRAME | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "记录仪数据分析"
+FONT 10, "新宋体"
+BEGIN
+END
+
+IDD_DIALOG_FILE_SETTING DIALOG DISCARDABLE  0, 0, 354, 223
+STYLE WS_CHILD
+FONT 11, "新宋体"
+BEGIN
+    CONTROL         "",IDC_COMBO_COMNO,"ComboBoxEx32",CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,30,28,44,30
+    PUSHBUTTON      "&C配置",IDC_BUTTON_COMCONF,76,26,21,14,NOT WS_VISIBLE
+    COMBOBOX        IDC_COMBO_MYNO,123,26,26,209,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Yes",IDC_RADIO_COLLECTION_YES,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,206,26,25,10
+    CONTROL         "No",IDC_RADIO__COLLECTION_NO,"Button",
+                    BS_AUTORADIOBUTTON | BS_VCENTER,236,26,25,10
+    EDITTEXT        IDC_EDIT_EXT,301,26,22,12,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER | WS_GROUP
+    EDITTEXT        IDC_EDIT_FILENAME,136,46,128,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON_OPEN_FILEDIA,266,45,18,13
+    PUSHBUTTON      "&Set",IDC_BUTTON_SET,288,44,47,15
+    PUSHBUTTON      "数据采集&D",IDC_BUTTON_DATA_COLLECTION,19,50,65,15
+    CONTROL         "Spin1",IDC_SPIN_EXT,"msctls_updown32",UDS_ARROWKEYS,325,
+                    25,10,14
+    GROUPBOX        "",IDC_STATIC,92,14,249,50
+    LTEXT           "MY No.",IDC_STATIC,97,27,24,10,NOT WS_GROUP
+    LTEXT           "Data collection",IDC_STATIC,153,27,49,8,SS_CENTERIMAGE | 
+                    NOT WS_GROUP
+    LTEXT           "Extension",IDC_STATIC,265,27,34,8,NOT WS_GROUP
+    LTEXT           "File Name",IDC_STATIC,97,47,37,8,NOT WS_GROUP
+    CONTROL         "List1",IDC_LIST_SET,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,14,85,327,130
+    CONTROL         "File setting list",IDC_STATIC,"Static",SS_SIMPLE,16,70,
+                    61,10
+    GROUPBOX        "串口选择",IDC_STATIC,15,17,74,29
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_LSC_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 400
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 231
+    END
+
+    IDD_DIALOG_FILE_SETTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 347
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -356,27 +393,6 @@ BEGIN
     0
 END
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDR_MAINFRAME           ICON    DISCARDABLE     "res\\LSC.ico"
-#endif    // Neutral resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-#ifdef _WIN32
-LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
-#pragma code_page(936)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
