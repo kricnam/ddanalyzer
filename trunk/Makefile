@@ -2,7 +2,7 @@ CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
 OBJS =		analyzer.o
 
-LIBS =
+LIBS =    -lboost_signals -lwt -lwthttp
 
 TARGET =	analyzer
 
