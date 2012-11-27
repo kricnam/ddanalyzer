@@ -15,7 +15,7 @@
 #include <Wt/WLineEdit>
 #include <Wt/WPushButton>
 #include <Wt/WText>
-
+#include <Wt/WGridLayout>
 // c++0x only, for std::bind
 // #include <functional>
 
@@ -33,7 +33,7 @@ public:
 private:
   WLineEdit *nameEdit_;
   WText *greeting_;
-
+  WPushButton *p;
   void greet();
 };
 
@@ -46,16 +46,29 @@ private:
 DataAnalyzer::DataAnalyzer(const WEnvironment& env)
   : WApplication(env)
 {
-  setTitle("Hello world");                               // application title
+  setTitle(WString::fromUTF8("行车数据管理平台",true));
+  WContainerWidget *w = new WContainerWidget(root());
+  //w->resize(WLength::Auto, WLength::Auto);
 
-  root()->addWidget(new WText("Your name, please ? "));  // show some text
+  WGridLayout *layout = new WGridLayout();
+  WPushButton *button
+      = new WPushButton("Greet me.", root());
+  button->setAttributeValue("style","height:150px;width:150px;");
+  p = new WPushButton("Greet me2.", root());
+  p->setAttributeValue("style","height:150px;width:150px;");
+  layout->addWidget(button, 0, 0, Wt::AlignCenter);
+  layout->addWidget(p, 0, 1, Wt::AlignCenter);
+  layout->addWidget(new Wt::WText("Item 1 0"), 1, 0);
+  layout->addWidget(new Wt::WText("Item 1 1"), 1, 1);
+  w->setLayout(layout);
+  p->setAttributeValue("style","height:150px;width:150px;");
+  button->setAttributeValue("style","height:150px;width:150px;");
+  root()->addWidget(w);
   nameEdit_ = new WLineEdit(root());                     // allow text input
   nameEdit_->setFocus();                                 // give focus
 
-  WPushButton *button
-    = new WPushButton("Greet me.", root());              // create a button
-  button->setMargin(5, Left);                            // add 5 pixels margin
-
+              // create a button
+  button->setMargin(15, Left);                            // add 5 pixels margin
   root()->addWidget(new WBreak());                       // insert a line break
 
   greeting_ = new WText(root());                         // empty text
@@ -87,6 +100,7 @@ void DataAnalyzer::greet()
    * Update the text, using text input into the nameEdit_ field.
    */
   greeting_->setText("Hello there, " + nameEdit_->text());
+  p->setAttributeValue("style","height:100px;width:100px;");
 }
 
 WApplication *createApplication(const WEnvironment& env)
