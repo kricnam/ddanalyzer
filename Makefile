@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		analyzer.o
+OBJS =		analyzer.o HomeUI.o DataImportUI.o
 
 LIBS =    -lboost_signals -lwt -lwthttp
 
