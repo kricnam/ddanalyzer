@@ -17,7 +17,7 @@ namespace DataCenter
 class HomeUI: public WContainerWidget
 {
 public:
-	HomeUI();
+	HomeUI(WContainerWidget *parent);
 	virtual ~HomeUI();
 };
 
