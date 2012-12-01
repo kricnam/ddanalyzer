@@ -14,27 +14,73 @@
 #include <Wt/WGridLayout>
 #include <Wt/WLabel>
 #include <Wt/WString>
+#include <Wt/WAnchor>
+
+#include <Wt/WStackedWidget>
+#include <Wt/WVBoxLayout>
+#include <Wt/WHBoxLayout>
+#include <Wt/WApplication>
+#include <Wt/Auth/AuthWidget>
 
 using namespace Wt;
 namespace DataCenter
 {
 
-HomeUI::HomeUI(WContainerWidget *parent)
+HomeUI::HomeUI(WContainerWidget *parent) :
+		WContainerWidget(parent)
 {
-	  setContentAlignment(AlignCenter);
-	  new WLabel(WString::fromUTF8("用户名",false),this);
-	  new WLineEdit(this);
-	  new WBreak(this);
-	  WPushButton *button
-	        = new WPushButton(WString::fromUTF8("登录",false),this);
+	setContentAlignment(AlignCenter);
 
+	session_.login().changed().connect(this, &HomeUI::onAuthEvent);
 
+	Auth::AuthModel *authModel = new Auth::AuthModel(Session::auth(),
+			session_.users(), this);
+	authModel->addPasswordAuth(&Session::passwordAuth());
+	authModel->addOAuth(Session::oAuth());
+
+	Auth::AuthWidget *authWidget = new Auth::AuthWidget(session_.login());
+	authWidget->setModel(authModel);
+	authWidget->setRegistrationEnabled(true);
+
+	WText *title = new WText(WString::fromUTF8("<h1>登录</h1>"));
+	addWidget(title);
+
+	addWidget(authWidget);
+
+	links_ = new WContainerWidget();
+	links_->setStyleClass("links");
+	links_->hide();
+	addWidget(links_);
+
+	authWidget->processEnvironment();
 
 }
 
 HomeUI::~HomeUI()
 {
 	// TODO Auto-generated destructor stub
+}
+
+void HomeUI::onAuthEvent()
+{
+	if (session_.login().loggedIn())
+	{
+		links_->show();
+		//handleInternalPath(WApplication::instance()->internalPath());
+	}
+	else
+	{
+
+		links_->hide();
+	}
+}
+
+void HomeUI::showGame()
+{
+}
+
+void HomeUI::showHighScores()
+{
 }
 
 } /* namespace DataCenter */
