@@ -40,9 +40,7 @@ public:
 	template<class Action>
 	void persist(Action& a)
 	{
-		Wt::Dbo::field(a, name, "name");
-		Wt::Dbo::field(a, role, "role");
-		Wt::Dbo::field(a, last_login, "last_login");
+
 	}
 
 };
