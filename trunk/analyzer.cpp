@@ -51,6 +51,10 @@ DataAnalyzer::DataAnalyzer(const WEnvironment& env)
   HomeUI* home = new HomeUI(w);
   w->addWidget(home);
   root()->addWidget(w);
+  setLocale(WT_LOCALE("cn"));
+  WMessageResourceBundle* pTranslate = new WMessageResourceBundle();
+  pTranslate->use(appRoot()+"resources/auth");
+  setLocalizedStrings(pTranslate);
   log("info") << "constructed" ;
 }
 
