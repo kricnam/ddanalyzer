@@ -102,6 +102,7 @@ Session::Session() :
 		myPasswordService.updatePassword(guestUser,  WString::fromUTF8("guest"));
 
 
+
 		Wt::log("info") << "user guest created";
 	} catch (...)
 	{

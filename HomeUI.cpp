@@ -64,6 +64,7 @@ void HomeUI::onAuthEvent()
 {
 	if (session_.login().loggedIn())
 	{
+		session_.setLastLogin();
 		links_->show();
 		//handleInternalPath(WApplication::instance()->internalPath());
 	}
