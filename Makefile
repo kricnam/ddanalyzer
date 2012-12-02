@@ -1,4 +1,4 @@
-CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
+CXXFLAGS =	-O2 -ggdb -Wall -fmessage-length=0
 
 OBJS =		analyzer.o HomeUI.o DataImportUI.o Session.o User.o
 

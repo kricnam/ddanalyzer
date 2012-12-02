@@ -40,7 +40,7 @@ HomeUI::HomeUI(WContainerWidget *parent) :
 
 	Auth::AuthWidget *authWidget = new Auth::AuthWidget(session_.login());
 	authWidget->setModel(authModel);
-	authWidget->setRegistrationEnabled(true);
+	authWidget->setRegistrationEnabled(false);
 
 	WText *title = new WText(WString::fromUTF8("<h1>登录</h1>"));
 	addWidget(title);
