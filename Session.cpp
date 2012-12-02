@@ -55,13 +55,13 @@ public:
 	}
 };
 
-Auth::AuthService myAuthService;
-Auth::PasswordService myPasswordService(myAuthService);
+Wt::Auth::AuthService myAuthService;
+Wt::Auth::PasswordService myPasswordService(myAuthService);
 MyOAuth myOAuthServices;
 
 void Session::configureAuth()
 {
-	myAuthService.setAuthTokensEnabled(true, "datacenter");
+	myAuthService.setAuthTokensEnabled(false);
 
 	Auth::PasswordVerifier *verifier = new Auth::PasswordVerifier();
 	verifier->addHashFunction(new Auth::BCryptHashFunction(7));
@@ -74,9 +74,6 @@ void Session::configureAuth()
 	myPasswordService.setStrengthValidator(
 			new Auth::PasswordStrengthValidator());
 	myPasswordService.setAttemptThrottlingEnabled(true);
-
-	if (Auth::GoogleService::configured())
-		myOAuthServices.push_back(new Auth::GoogleService(myAuthService));
 }
 
 Session::Session() :
@@ -85,10 +82,10 @@ Session::Session() :
 	session_.setConnection(sqlite3_);
 	sqlite3_.setProperty("show-queries", "true");
 
-	session_.mapClass<User>("user");
-	session_.mapClass<AuthInfo>("user");
-	session_.mapClass<AuthInfo::AuthIdentityType>("user");
-	session_.mapClass<AuthInfo::AuthTokenType>("user");
+	session_.mapClass<Worker>("user");
+	session_.mapClass<AuthInfo>("auth_info");
+	session_.mapClass<AuthInfo::AuthIdentityType>("auth_identity");
+	session_.mapClass<AuthInfo::AuthTokenType>("auth_token");
 
 	users_ = new UserDatabase(session_);
 
@@ -96,15 +93,16 @@ Session::Session() :
 	try
 	{
 		session_.createTables();
-
+		Wt::log("info") << "Database created";
 		/*
 		 * Add a default guest/guest account
 		 */
 		Auth::User guestUser = users_->registerNew();
-		guestUser.addIdentity(Auth::Identity::LoginName, "guest");
-		myPasswordService.updatePassword(guestUser, "guest");
+		guestUser.addIdentity(Auth::Identity::LoginName, WString::fromUTF8("guest"));
+		myPasswordService.updatePassword(guestUser,  WString::fromUTF8("guest"));
 
-		Wt::log("info") << "Database created";
+
+		Wt::log("info") << "user guest created";
 	} catch (...)
 	{
 		Wt::log("info") << "Using existing database";
@@ -118,23 +116,23 @@ Session::~Session()
 	delete users_;
 }
 
-dbo::ptr<User> Session::user() const
+dbo::ptr<Worker> Session::user() const
 {
 	if (login_.loggedIn())
 	{
 		dbo::ptr<AuthInfo> authInfo = users_->find(login_.user());
-		dbo::ptr<User> user = authInfo->user();
+		dbo::ptr<Worker> user = authInfo->user();
 
 		if (!user)
 		{
-			user = session_.add(new User());
+			user = session_.add(new Worker());
 			authInfo.modify()->setUser(user);
 		}
 
 		return user;
 	}
 	else
-		return dbo::ptr<User>();
+		return dbo::ptr<Worker>();
 }
 
 std::string Session::userName() const
@@ -149,7 +147,7 @@ void Session::setLastLogin(void)
 {
 	dbo::Transaction transaction(session_);
 
-	dbo::ptr<User> u = user();
+	dbo::ptr<Worker> u = user();
 	if (u)
 	{
 		u.modify()->last_login = WDateTime::currentDateTime();

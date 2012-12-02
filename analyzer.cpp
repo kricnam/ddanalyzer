@@ -19,6 +19,7 @@
 // c++0x only, for std::bind
 // #include <functional>
 #include "HomeUI.h"
+#include "Session.h"
 
 using namespace Wt;
 using namespace DataCenter;
@@ -62,6 +63,7 @@ DataAnalyzer::DataAnalyzer(const WEnvironment& env)
 WApplication *createApplication(const WEnvironment& env)
 {
 
+  DataCenter::Session::configureAuth();
   return new DataAnalyzer(env);
 }
 

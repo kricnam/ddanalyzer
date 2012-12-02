@@ -57,7 +57,7 @@
   
   <!-- LoginWidget -->
 
-  <message id="Wt.Auth.login-form-title">登录</message>
+  <message id="Wt.Auth.login-form-title">系统认证</message>
   <message id="Wt.Auth.login-form-info"></message>
   <message id="Wt.Auth.user-name">帐号</message>
   <message id="Wt.Auth.user-name-info">请输入您的帐号</message>
@@ -69,17 +69,17 @@
   </message>
   <message id="Wt.Auth.password">口令</message>
   <message id="Wt.Auth.password-info">请输入您的密码口令</message>
-  <message id="Wt.Auth.remember-me">Remember me</message>
+  <message id="Wt.Auth.remember-me">记住登录状态</message>
   <message id="Wt.Auth.remember-me-info.days">
-    Keeps login for {1} days
+    保持登录{1}天
   </message>
   <message id="Wt.Auth.remember-me-info.weeks">
-    Keeps login for {1} weeks
+    保持登录{1}星期
   </message>
   <message id="Wt.Auth.lost-password">Lost password</message>
-  <message id="Wt.Auth.login">Login</message>
-  <message id="Wt.Auth.logout">Logout</message>
-  <message id="Wt.Auth.throttle-retry">Retry in {1}s</message>
+  <message id="Wt.Auth.login">登录</message>
+  <message id="Wt.Auth.logout">注销</message>
+  <message id="Wt.Auth.throttle-retry">请在{1}秒钟后重试</message>
 
   <!-- RegistrationWidget -->
 

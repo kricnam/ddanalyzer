@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -ggdb -Wall -fmessage-length=0
 
-OBJS =		analyzer.o HomeUI.o DataImportUI.o Session.o User.o
+OBJS =		analyzer.o HomeUI.o DataImportUI.o Session.o Worker.o
 
 LIBS =    -lboost_signals -lwt -lwthttp -lwtdbo -lboost_system -lcrypt -lwtdbosqlite3
 

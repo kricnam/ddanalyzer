@@ -21,6 +21,7 @@
 #include <Wt/WHBoxLayout>
 #include <Wt/WApplication>
 #include <Wt/Auth/AuthWidget>
+#include <Wt/Auth/AuthModel>
 
 using namespace Wt;
 namespace DataCenter
@@ -30,6 +31,7 @@ HomeUI::HomeUI(WContainerWidget *parent) :
 		WContainerWidget(parent)
 {
 	setContentAlignment(AlignCenter);
+
 
 	session_.login().changed().connect(this, &HomeUI::onAuthEvent);
 
@@ -51,9 +53,6 @@ HomeUI::HomeUI(WContainerWidget *parent) :
 	links_->setStyleClass("links");
 	links_->hide();
 	addWidget(links_);
-
-	authWidget->processEnvironment();
-
 }
 
 HomeUI::~HomeUI()
