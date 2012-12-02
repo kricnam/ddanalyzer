@@ -15,7 +15,7 @@
 #include <Wt/Dbo/ptr>
 #include <Wt/Dbo/backend/Sqlite3>
 
-#include "User.h"
+#include "Worker.h"
 using namespace Wt;
 
 
@@ -35,7 +35,7 @@ public:
 		return login_;
 	}
 
-	std::vector<User> topUsers(int limit);
+	std::vector<Worker> topUsers(int limit);
 
 	/*
 	 * These methods deal with the currently logged in user
@@ -53,7 +53,7 @@ private:
 	UserDatabase *users_;
 	Wt::Auth::Login login_;
 
-	Wt::Dbo::ptr<User> user() const;
+	Wt::Dbo::ptr<Worker> user() const;
 };
 
 } /* namespace DataCenter */

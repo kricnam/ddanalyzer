@@ -1,50 +1,50 @@
 /*
- * User.h
+ * Worker.h
  *
  *  Created on: Dec 1, 2012
  *      Author: mxx
  */
 
-#ifndef USER_H_
-#define USER_H_
-#include <Wt/Dbo/Dbo>
+#ifndef WORKER_H_
+#define WORKER_H_
+
 #include <string>
 #include <Wt/Dbo/Types>
 #include <Wt/Dbo/WtSqlTraits>
 #include <Wt/Auth/Dbo/AuthInfo>
 
 using namespace Wt;
+using namespace Wt::Dbo;
 using namespace std;
 
 namespace DataCenter
 {
-class User;
-typedef Wt::Auth::Dbo::AuthInfo<User> AuthInfo;
-typedef Wt::Dbo::collection< Wt::Dbo::ptr<User> > Users;
+class Worker;
+typedef Auth::Dbo::AuthInfo<Worker> AuthInfo;
+typedef collection<ptr<Worker> > Users;
 
-class User
+class Worker: public Wt::Dbo::Dbo<Worker>
 {
 public:
-	User();
-	virtual ~User();
+	Worker();
+	virtual ~Worker();
 	enum Role
 	{
-		Admin = 0, Worker = 1, Guest
+		Admin = 0, General = 1, Guest
 	};
 
 	string name;
-	string password;
 	Role role;
 	WDateTime last_login;
 
 	template<class Action>
 	void persist(Action& a)
 	{
-		Dbo::field(a, name, "name");
-		Dbo::field(a, password, "password");
-		Dbo::field(a, role, "role");
-		Dbo::field(a, last_login, "last_login");
+		Wt::Dbo::field(a, name, "name");
+		Wt::Dbo::field(a, role, "role");
+		Wt::Dbo::field(a, last_login, "last_login");
 	}
+
 };
 
 } /* namespace DataCenter */

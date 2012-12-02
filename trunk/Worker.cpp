@@ -5,7 +5,7 @@
  *      Author: mxx
  */
 
-#include "User.h"
+#include "Worker.h"
 #include <Wt/Auth/Dbo/AuthInfo>
 #include <Wt/Dbo/Impl>
 
@@ -13,13 +13,13 @@ namespace DataCenter
 {
 
 
-User::User() :
+Worker::Worker() :
 		role(Guest)
 {
 
 }
 
-User::~User()
+Worker::~Worker()
 {
 
 }
