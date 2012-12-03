@@ -20,6 +20,7 @@
 
 using namespace Wt;
 namespace dbo = Wt::Dbo;
+
 namespace DataCenter
 {
 
@@ -59,6 +60,7 @@ Wt::Auth::AuthService myAuthService;
 Wt::Auth::PasswordService myPasswordService(myAuthService);
 MyOAuth myOAuthServices;
 
+
 void Session::configureAuth()
 {
 	myAuthService.setAuthTokensEnabled(false);
@@ -82,10 +84,10 @@ Session::Session() :
 	session_.setConnection(sqlite3_);
 	sqlite3_.setProperty("show-queries", "true");
 
-	session_.mapClass<Worker>("user");
-	session_.mapClass<AuthInfo>("auth_info");
-	session_.mapClass<AuthInfo::AuthIdentityType>("auth_identity");
-	session_.mapClass<AuthInfo::AuthTokenType>("auth_token");
+	session_.mapClass < Worker > ("user");
+	session_.mapClass < AuthInfo > ("auth_info");
+	session_.mapClass < AuthInfo::AuthIdentityType > ("auth_identity");
+	session_.mapClass < AuthInfo::AuthTokenType > ("auth_token");
 
 	users_ = new UserDatabase(session_);
 
@@ -98,10 +100,9 @@ Session::Session() :
 		 * Add a default guest/guest account
 		 */
 		Auth::User guestUser = users_->registerNew();
-		guestUser.addIdentity(Auth::Identity::LoginName, WString::fromUTF8("guest"));
-		myPasswordService.updatePassword(guestUser,  WString::fromUTF8("guest"));
-
-
+		guestUser.addIdentity(Auth::Identity::LoginName,
+				WString::fromUTF8("guest"));
+		myPasswordService.updatePassword(guestUser, WString::fromUTF8("guest"));
 
 		Wt::log("info") << "user guest created";
 	} catch (...)
@@ -121,8 +122,8 @@ dbo::ptr<Worker> Session::user() const
 {
 	if (login_.loggedIn())
 	{
-		dbo::ptr<AuthInfo> authInfo = users_->find(login_.user());
-		dbo::ptr<Worker> user = authInfo->user();
+		dbo::ptr < AuthInfo > authInfo = users_->find(login_.user());
+		dbo::ptr < Worker > user = authInfo->user();
 
 		if (!user)
 		{
@@ -148,15 +149,15 @@ void Session::setLastLogin(void)
 {
 	dbo::Transaction transaction(session_);
 
-	dbo::ptr<Worker> u = user();
+	dbo::ptr < Worker > u = user();
 	if (u)
 	{
 		u.modify()->last_login = WDateTime::currentDateTime();
+		u.modify()->name = userName();
 	}
 
 	transaction.commit();
 }
-
 
 Auth::AbstractUserDatabase& Session::users()
 {
@@ -177,4 +178,5 @@ const std::vector<const Auth::OAuthService *>& Session::oAuth()
 {
 	return myOAuthServices;
 }
-} /* namespace DataCenter */
+
+}

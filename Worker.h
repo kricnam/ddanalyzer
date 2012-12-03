@@ -17,8 +17,6 @@ using namespace Wt;
 using namespace Wt::Dbo;
 using namespace std;
 
-namespace DataCenter
-{
 class Worker;
 typedef Auth::Dbo::AuthInfo<Worker> AuthInfo;
 typedef collection<ptr<Worker> > Users;
@@ -36,14 +34,19 @@ public:
 	string name;
 	Role role;
 	WDateTime last_login;
-
+	Wt::Dbo::collection< Wt::Dbo::ptr<AuthInfo> > authInfos;
 	template<class Action>
 	void persist(Action& a)
 	{
-
+		Wt::Dbo::field(a, name, "name");
+		Wt::Dbo::field(a, role, "role");
+		Wt::Dbo::field(a, last_login, "last_login");
+		Wt::Dbo::hasMany(a, authInfos, Wt::Dbo::ManyToOne, "user");
 	}
 
 };
 
-} /* namespace DataCenter */
+
+DBO_EXTERN_TEMPLATES(Worker);
+
 #endif /* USER_H_ */
