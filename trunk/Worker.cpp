@@ -9,8 +9,7 @@
 #include <Wt/Auth/Dbo/AuthInfo>
 #include <Wt/Dbo/Impl>
 
-namespace DataCenter
-{
+DBO_INSTANTIATE_TEMPLATES(Worker);
 
 
 Worker::Worker() :
@@ -24,4 +23,3 @@ Worker::~Worker()
 
 }
 
-} /* namespace DataCenter */
