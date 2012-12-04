@@ -14,22 +14,27 @@ using namespace Wt;
 
 namespace DataCenter
 {
-
+class DataImportUI;
 class HomeUI: public WContainerWidget
 {
 public:
 	HomeUI(WContainerWidget *parent);
 	virtual ~HomeUI();
 
-	WContainerWidget *links_;
-//	WAnchor *backToGameAnchor_;
-//	WAnchor *scoresAnchor_;
+	void handleInternalPath(const std::string &internalPath);
+
+protected:
+	Wt::WStackedWidget *mainStack_;
+
+	DataImportUI* importUI;
+
+	Wt::WContainerWidget *links_;
+	Wt::WAnchor *importUIAnchor_;
 
 	Session session_;
 
 	void onAuthEvent();
-	void showGame();
-	void showHighScores();
+	void showDataImport();
 };
 
 } /* namespace DataCenter */
