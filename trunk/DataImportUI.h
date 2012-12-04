@@ -9,6 +9,7 @@
 #define DATAIMPORTUI_H_
 
 #include <Wt/WContainerWidget>
+#include "Session.h"
 using namespace Wt;
 
 namespace DataCenter
@@ -17,8 +18,9 @@ namespace DataCenter
 class DataImportUI: public WContainerWidget
 {
 public:
-	DataImportUI();
+	DataImportUI(Session *session, Wt::WContainerWidget *parent = 0);
 	virtual ~DataImportUI();
+	void update(void);
 };
 
 } /* namespace DataCenter */
