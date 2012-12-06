@@ -49,7 +49,7 @@ HomeUI::HomeUI(WContainerWidget *parent) :
 	addWidget(authWidget);
 
 	mainStack_ = new WStackedWidget();
-
+	mainStack_->setStyleClass("mainstack");
 	addWidget(mainStack_);
 
 	links_ = new WContainerWidget();
@@ -78,7 +78,7 @@ void HomeUI::onAuthEvent()
 	if (session_.login().loggedIn())
 	{
 		session_.setLastLogin();
-		links_->show();
+		links_->hide();
 		handleInternalPath(WApplication::instance()->internalPath());
 	}
 	else
@@ -108,7 +108,7 @@ void HomeUI::showDataImport()
 	mainStack_->setCurrentWidget(importUI);
 	importUI->update();
 	log("info") << "data import update";
-	importUI->removeStyleClass("selected-link");
+//	importUI->removeStyleClass("selected-link");
 }
 
 }

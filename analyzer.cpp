@@ -56,6 +56,7 @@ DataAnalyzer::DataAnalyzer(const WEnvironment& env)
   WMessageResourceBundle* pTranslate = new WMessageResourceBundle();
   pTranslate->use(appRoot()+"resources/auth");
   setLocalizedStrings(pTranslate);
+  useStyleSheet("resources/analyzer.css");
   log("info") << "constructed" ;
 }
 
