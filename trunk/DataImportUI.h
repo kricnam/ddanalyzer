@@ -21,6 +21,9 @@ public:
 	DataImportUI(Session *session, Wt::WContainerWidget *parent = 0);
 	virtual ~DataImportUI();
 	void update(void);
+	void uploadPrompt(void);
+	void fileUploaded(void);
+	void fileTooLarge(void);
 };
 
 } /* namespace DataCenter */
