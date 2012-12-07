@@ -9,6 +9,8 @@
 #include <Wt/WPushButton>
 #include <Wt/WText>
 #include <Wt/WFileUpload>
+#include <Wt/WProgressBar>
+#include <Wt/WLineEdit>
 
 using namespace Wt;
 namespace DataCenter
@@ -17,16 +19,18 @@ namespace DataCenter
 DataImportUI::DataImportUI(Session *session, Wt::WContainerWidget *parent) :
 		WContainerWidget(parent)
 {
+	log("info") << "DataImportUI";
 	setContentAlignment(AlignCenter);
-	new WText(WString::fromUTF8("<h2>功能选择</h2>"), this);
 }
 
 DataImportUI::~DataImportUI()
 {
+	log("info") << "DataImportUI delete";
 }
 
 void DataImportUI::update(void)
 {
+	new WText(WString::fromUTF8("<h2>功能选择</h2>"), this);
 	WPushButton *b = new WPushButton(WString::fromUTF8("数据导入"), this);
 
 	b->setWidth(100);
@@ -38,32 +42,18 @@ void DataImportUI::update(void)
 void DataImportUI::uploadPrompt(void)
 {
 	log("info") << "upload";
+	WContainerWidget *result = new WContainerWidget(this);
+	WFileUpload * const fu = new WFileUpload(result);
+	fu->setProgressBar(new WProgressBar());
+	fu->changed().connect(fu, &WFileUpload::upload);
+	fu->uploaded().connect(this, &DataImportUI::fileUploaded);
+	fu->fileTooLarge().connect(this,&DataImportUI::fileTooLarge);
 
-	Wt::WFileUpload *upload = new Wt::WFileUpload(this);
-	upload->setFileTextSize(40);
-
-	// Provide a button
-	Wt::WPushButton *uploadButton = new Wt::WPushButton("Send", this);
-
-	// Upload when the button is clicked.
-	uploadButton->clicked().connect(upload, &Wt::WFileUpload::upload);
-	uploadButton->clicked().connect(uploadButton, &Wt::WPushButton::disable);
-
-	// Upload automatically when the user entered a file.
-	upload->changed().connect(upload, &WFileUpload::upload);
-	upload->changed().connect(uploadButton, &Wt::WPushButton::disable);
-
-	// React to a succesfull upload.
-	upload->uploaded().connect(this, &DataImportUI::fileUploaded);
-
-	// React to a fileupload problem.
-	upload->fileTooLarge().connect(this, &DataImportUI::fileTooLarge);
-
-	upload->show();
 }
 
 void DataImportUI::fileUploaded(void)
 {
+	log("info") << "uploaded" ;
 
 }
 
