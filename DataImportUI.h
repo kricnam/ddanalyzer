@@ -9,6 +9,7 @@
 #define DATAIMPORTUI_H_
 
 #include <Wt/WContainerWidget>
+#include <Wt/WLineEdit>
 #include "Session.h"
 using namespace Wt;
 

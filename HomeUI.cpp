@@ -84,6 +84,7 @@ void HomeUI::onAuthEvent()
 	else
 	{
 		mainStack_->clear();
+		importUI = NULL;
 		links_->hide();
 	}
 }
@@ -106,6 +107,7 @@ void HomeUI::showDataImport()
 		importUI = new DataImportUI(&session_, mainStack_);
 
 	mainStack_->setCurrentWidget(importUI);
+
 	importUI->update();
 	log("info") << "data import update";
 //	importUI->removeStyleClass("selected-link");
