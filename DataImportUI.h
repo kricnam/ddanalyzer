@@ -10,6 +10,7 @@
 
 #include <Wt/WContainerWidget>
 #include <Wt/WLineEdit>
+#include <Wt/WPushButton>
 #include "Session.h"
 using namespace Wt;
 
@@ -25,6 +26,10 @@ public:
 	void uploadPrompt(void);
 	void fileUploaded(void);
 	void fileTooLarge(void);
+protected:
+	WContainerWidget *result;
+	WFileUpload* ptrUpload;
+	WPushButton *button;
 };
 
 } /* namespace DataCenter */
