@@ -11,7 +11,7 @@
 #include <Wt/WFileUpload>
 #include <Wt/WProgressBar>
 #include <Wt/WLineEdit>
-
+#include <Wt/WAnimation>
 using namespace Wt;
 namespace DataCenter
 {
@@ -21,6 +21,9 @@ DataImportUI::DataImportUI(Session *session, Wt::WContainerWidget *parent) :
 {
 	log("info") << "DataImportUI";
 	setContentAlignment(AlignCenter);
+	result = NULL;
+	button = NULL;
+	ptrUpload = NULL;
 }
 
 DataImportUI::~DataImportUI()
@@ -30,35 +33,54 @@ DataImportUI::~DataImportUI()
 
 void DataImportUI::update(void)
 {
+	log("info") << "DataImportUI update";
 	new WText(WString::fromUTF8("<h2>功能选择</h2>"), this);
-	WPushButton *b = new WPushButton(WString::fromUTF8("数据导入"), this);
+	button = new WPushButton(WString::fromUTF8("数据导入"), this);
 
-	b->setWidth(100);
-	b->setHeight(100);
-	b->clicked().connect(this, &DataImportUI::uploadPrompt);
-	b->show();
+	button->setWidth(100);
+	button->setHeight(100);
+	button->clicked().connect(this, &DataImportUI::uploadPrompt);
+	button->show();
 }
 
 void DataImportUI::uploadPrompt(void)
 {
-	log("info") << "upload";
-	WContainerWidget *result = new WContainerWidget(this);
-	WFileUpload * const fu = new WFileUpload(result);
-	fu->setProgressBar(new WProgressBar());
-	fu->changed().connect(fu, &WFileUpload::upload);
-	fu->uploaded().connect(this, &DataImportUI::fileUploaded);
-	fu->fileTooLarge().connect(this,&DataImportUI::fileTooLarge);
+	if (result)
+		return;
 
+	button->setStyleClass("side-bar");
+	result = new WContainerWidget(this);
+	ptrUpload = new WFileUpload(result);
+	ptrUpload->setProgressBar(new WProgressBar());
+	ptrUpload->changed().connect(ptrUpload, &WFileUpload::upload);
+	ptrUpload->uploaded().connect(this, &DataImportUI::fileUploaded);
+	ptrUpload->fileTooLarge().connect(this, &DataImportUI::fileTooLarge);
 }
 
 void DataImportUI::fileUploaded(void)
 {
-	log("info") << "uploaded" ;
+
+	if (result)
+	{
+		string strTmp = ptrUpload->spoolFileName();
+		new WText(strTmp, this);
+		delete result;
+		result = NULL;
+	}
 
 }
 
 void DataImportUI::fileTooLarge(void)
 {
+	if (result)
+	{
+		WString strTmp = ptrUpload->clientFileName();
+		log("info") << strTmp;
+		strTmp += " too  large";
+		new WText(strTmp, this);
+		delete result;
+		result = NULL;
+	}
 
 }
 
