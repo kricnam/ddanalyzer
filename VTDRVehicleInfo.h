@@ -7,12 +7,26 @@
 
 #ifndef VTDRVEHICLEINFO_H_
 #define VTDRVEHICLEINFO_H_
-
+#include <string>
+using namespace std;
 class VTDRVehicleInfo
 {
 public:
 	VTDRVehicleInfo();
 	virtual ~VTDRVehicleInfo();
+	int Read(const char* buf);
+	string& Write(string& buf);
+	string strTypeCode;
+	string strPlateNumber;
+	string strPlateClass;
+protected:
+	typedef struct _VehicleInfo
+	{
+		unsigned char TypeCode[17];
+		unsigned char PlateNumber[12];
+		unsigned char PlateClass[12];
+	}__attribute__ ((packed)) VehicleInfo;
+
 };
 
 #endif /* VTDRVEHICLEINFO_H_ */
