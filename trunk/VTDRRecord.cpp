@@ -29,4 +29,19 @@ string VTDRRecord::BCD2ASCII(string& strBCD)
 	return str;
 }
 
+unsigned int VTDRRecord::BCD2INT(const char* bcd, int size)
+{
+	unsigned int v = 0;
+	for (int i = 0; i < size; i++)
+	{
+		char c = bcd[i];
+		v = v * 100;
+		v += (c >> 4) & 0x0F * 10 + (c & 0x0f);
+	}
+	return v;
+}
 
+char VTDRRecord::INT2BCDchar(int n)
+{
+	return ((((n%100)/10) & 0x0F) << 4) + (n%100)%10;
+}
