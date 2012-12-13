@@ -7,9 +7,10 @@
 
 #ifndef VTDRVEHICLECONFIGURE_H_
 #define VTDRVEHICLECONFIGURE_H_
+#include "VTDRRecord.h"
 #include <string>
 using namespace std;
-class VTDRVehicleConfigure
+class VTDRVehicleConfigure: public VTDRRecord
 {
 public:
 	VTDRVehicleConfigure();
