@@ -8,8 +8,9 @@
 #ifndef VTDRVEHICLEINFO_H_
 #define VTDRVEHICLEINFO_H_
 #include <string>
+#include "VTDRRecord.h"
 using namespace std;
-class VTDRVehicleInfo
+class VTDRVehicleInfo: public VTDRRecord
 {
 public:
 	VTDRVehicleInfo();

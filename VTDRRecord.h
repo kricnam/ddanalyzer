@@ -8,7 +8,13 @@
 #ifndef VTDRRECORD_H_
 #define VTDRRECORD_H_
 #include <string>
+#include <string.h>
+#include <stdio.h>
 using namespace std;
+
+#define SET(x,y) set(x,y,sizeof(x))
+#define ASSIGN(x,y) assign(x,y,sizeof(y))
+
 class VTDRRecord
 {
 public:
@@ -17,8 +23,17 @@ public:
 	static string BCD2ASCII(string& strBCD);
 	static unsigned int BCD2INT(const char* bcd, int size);
 	static char INT2BCDchar(int n);
-	template <class V> void assign(string t,V v) { t.assign((const char*)v,sizeof(v));};
-	template <class V> void set(V v,string t) { memcpy(v,t.data(),min(t.size(),sizeof(v)));};
+	template<class V> void assign(string& t, V v, int n)
+	{
+		t.assign((const char*) v, n);
+		printf("%s,%d\n",v,n);
+	}
+	;
+	template<class V> void set(V v, string& t, int n)
+	{
+		memcpy(v, t.data(), min((int)t.size(),n));
+	}
+	;
 };
 
 #endif /* VTDRRECORD_H_ */
