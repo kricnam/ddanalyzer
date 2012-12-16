@@ -25,7 +25,7 @@ typedef struct _VTDRTime
 	unsigned char bcdHour;
 	unsigned char bcdMinute;
 	unsigned char bcdSecond;
-} __attribute__ ((packed)) VTDRTime;
+}__attribute__ ((packed)) VTDRTime;
 
 class VTDRRecord
 {
@@ -37,18 +37,35 @@ public:
 	static unsigned int BCD2INT(unsigned char bcd);
 	static char INT2BCDchar(int n);
 	static time_t ToSystime(VTDRTime& t);
-	static VTDRTime& ToBCDTime(time_t t,VTDRTime& tm);
+	static VTDRTime& ToBCDTime(time_t t, VTDRTime& tm);
+	static float TenThoundthMinuteToMinute(int n)
+	{
+		return n / 10000.0;
+	}
+	;
+	static int MinuteToTenThound(float n)
+	{
+		return (int)(n * 10000);
+	}
+	;
 	template<class V> void assign(string& t, V v, int n)
 	{
 		t.assign((const char*) v, n);
-		printf("%s,%d\n",v,n);
+		printf("%s,%d\n", v, n);
 	}
 	;
 	template<class V> void set(V v, string& t, int n)
 	{
-		memcpy(v, t.data(), min((int)t.size(),n));
+		memcpy(v, t.data(), min((int) t.size(), n));
 	}
 	;
+protected:
+	typedef struct _Position
+	{
+		int longititude;
+		int latitude;
+		short altitude;
+	}__attribute__ ((packed)) Position;
 };
 
 #endif /* VTDRRECORD_H_ */
