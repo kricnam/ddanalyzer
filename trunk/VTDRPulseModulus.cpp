@@ -7,14 +7,30 @@
 
 #include "VTDRPulseModulus.h"
 
-VTDRPulseModulus::VTDRPulseModulus()
+VTDRPulseModulus::VTDRPulseModulus() :
+		tTime(0), sModulus(0)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 VTDRPulseModulus::~VTDRPulseModulus()
 {
-	// TODO Auto-generated destructor stub
 }
 
+int VTDRPulseModulus::Read(const char* buf)
+{
+	PulseModulus* ptrMod = (PulseModulus*) buf;
+	tTime = ToSystime(ptrMod->vTime);
+	sModulus = ((ptrMod->cHighByte << 8) & 0xFF00) + ptrMod->cLowByet;
+	return sizeof(*ptrMod);
+}
+
+string& VTDRPulseModulus::Write(string& buf)
+{
+	PulseModulus mod =
+	{ 0 };
+	ToBCDTime(tTime, mod.vTime);
+	mod.cHighByte = (unsigned char) ((sModulus >> 8) & 0x0FF);
+	mod.cLowByet = (unsigned char) (sModulus & 0x0FF);
+	buf.append((const char*) &mod, sizeof(mod));
+	return buf;
+}

@@ -7,14 +7,30 @@
 
 #include "VTDRParameterModifyRecord.h"
 
-VTDRParameterModifyRecord::VTDRParameterModifyRecord()
+VTDRParameterModifyRecord::VTDRParameterModifyRecord():tTime(0),cType(0)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 VTDRParameterModifyRecord::~VTDRParameterModifyRecord()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
+int VTDRParameterModifyRecord::Read(const char* buf)
+{
+	ModifyLog* ptrLog = (ModifyLog*) buf;
+	tTime = ToSystime(ptrLog->vTime);
+	cType = ptrLog->cType;
+	return sizeof(*ptrLog);
+}
+
+string& VTDRParameterModifyRecord::Write(string& buf)
+{
+	ModifyLog log =
+	{ 0 };
+	ToBCDTime(tTime, log.vTime);
+	log.cType = cType;
+	buf.append((const char*) &log, sizeof(log));
+	return buf;
+}

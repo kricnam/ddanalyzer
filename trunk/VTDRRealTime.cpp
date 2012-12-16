@@ -7,14 +7,28 @@
 
 #include "VTDRRealTime.h"
 
-VTDRRealTime::VTDRRealTime()
+VTDRRealTime::VTDRRealTime() :
+		tTime(0)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 VTDRRealTime::~VTDRRealTime()
 {
-	// TODO Auto-generated destructor stub
 }
 
+int VTDRRealTime::Read(const char* buf)
+{
+	VTDRTime* ptrTime = (VTDRTime*) buf;
+	tTime = ToSystime(*ptrTime);
+	return sizeof(*ptrTime);
+}
+
+string& VTDRRealTime::Write(string& buf)
+{
+	VTDRTime vTime =
+	{ 0 };
+	ToBCDTime(tTime,vTime);
+	buf.append((const char*)&vTime,sizeof(vTime));
+	return buf;
+}
