@@ -7,7 +7,8 @@
 
 #include "VTDROutPoweredRecord.h"
 
-VTDROutPoweredRecord::VTDROutPoweredRecord()
+VTDROutPoweredRecord::VTDROutPoweredRecord() :
+		tTime(0), cType(0)
 {
 	// TODO Auto-generated constructor stub
 
@@ -18,3 +19,19 @@ VTDROutPoweredRecord::~VTDROutPoweredRecord()
 	// TODO Auto-generated destructor stub
 }
 
+int VTDROutPoweredRecord::Read(const char* buf)
+{
+	PowerLog* ptrLog = (PowerLog*) buf;
+	tTime = ToSystime(ptrLog->vTime);
+	cType = ptrLog->cType;
+	return sizeof(*ptrLog);
+}
+
+string& VTDROutPoweredRecord::Write(string& buf)
+{
+	PowerLog log;
+	ToBCDTime(tTime,log.vTime);
+	log.cType = cType;
+	buf.append((const char*)&log,sizeof(log));
+	return buf;
+}
