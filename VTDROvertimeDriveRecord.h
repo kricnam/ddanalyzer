@@ -24,8 +24,8 @@ public:
 	float startLatitude;
 	float endLogititude;
 	float endLatitude;
-	float startAltitude;
-	float endAltitude;
+	int startAltitude;
+	int endAltitude;
 
 protected:
 	typedef struct _OvertimeDriveRecord

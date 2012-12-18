@@ -18,7 +18,7 @@ public:
 	time_t tStart;
 	float Longititude[60]; //unit: minute
 	float Latitude[60];
-	float Altitude[60];
+	int Altitude[60];
 	int Speed[60];
 	int Read(const char* buf);
 	string& Write(string& buf);
