@@ -25,13 +25,8 @@ int VTDROvertimeDriveRecord::Read(const char* buf)
 	ASSIGN(strLicese, ptrRec->DriverLicense);
 	tStartTime = ToSystime(ptrRec->startTime);
 	tEndTime = ToSystime(ptrRec->endTime);
-	startLongititude = ntohl(ptrRec->startPos.longititude) / 10000.0f;
-	startLatitude = ntohl(ptrRec->startPos.latitude) / 10000.0f;
-	startAltitude = ntohs(ptrRec->startPos.altitude);
-	endLogititude = ntohl(ptrRec->endPos.longititude) / 10000.0f;
-	endLatitude = ntohl(ptrRec->endPos.latitude) / 10000.0f;
-	endAltitude = ntohs(ptrRec->endPos.altitude);
-
+	readPosition(ptrRec->startPos,startLongititude,startLatitude,startAltitude);
+	readPosition(ptrRec->endPos,endLogititude,endLatitude,endAltitude);
 	return sizeof(*ptrRec);
 }
 
@@ -42,13 +37,8 @@ string& VTDROvertimeDriveRecord::Write(string& buf)
 	SET(rec.DriverLicense, strLicese);
 	ToBCDTime(tStartTime, rec.startTime);
 	ToBCDTime(tEndTime, rec.endTime);
-	rec.startPos.longititude = htonl(MinuteToTenThound(startLongititude));
-	rec.startPos.latitude = htonl(MinuteToTenThound(startLatitude));
-	rec.startPos.altitude = htons(startAltitude);
-	rec.endPos.longititude = htonl(MinuteToTenThound(endLogititude));
-	rec.endPos.latitude = htonl(MinuteToTenThound(endLatitude));
-	rec.endPos.altitude = htons(endAltitude);
-
+	writePosition(rec.startPos,startLongititude,startLatitude,startAltitude);
+	writePosition(rec.endPos,endLogititude,endLatitude,endAltitude);
 	buf.append((const char*)&rec,sizeof(rec));
 	return buf;
 }

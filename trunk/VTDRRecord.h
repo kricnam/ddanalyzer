@@ -45,13 +45,12 @@ public:
 	;
 	static int MinuteToTenThound(float n)
 	{
-		return (int)(n * 10000);
+		return (int) (n * 10000);
 	}
 	;
 	template<class V> void assign(string& t, V v, int n)
 	{
 		t.assign((const char*) v, n);
-		printf("%s,%d\n", v, n);
 	}
 	;
 	template<class V> void set(V v, string& t, int n)
@@ -66,6 +65,19 @@ protected:
 		int latitude;
 		short altitude;
 	}__attribute__ ((packed)) Position;
+
+	void readPosition(Position& pos, float& Long, float& Lat, int& Alt)
+	{
+		Long = ntohl(pos.longititude) / 10000.0;
+		Lat = ntohl(pos.latitude) / 10000.0;
+		Alt = ntohs(pos.altitude);
+	}
+	void writePosition(Position& pos, float Long, float Lat, int Alt)
+	{
+		pos.longititude = htonl((int) (Long * 10000.0));
+		pos.latitude = htonl((int) (Lat * 10000.0));
+		pos.altitude = htons(Alt);
+	}
 };
 
 #endif /* VTDRRECORD_H_ */
