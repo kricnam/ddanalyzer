@@ -7,15 +7,15 @@
 
 #include "VTDRVehicleConfigure.h"
 
-VTDRVehicleConfigure::VTDRVehicleConfigure()
+VTDRVehicleConfigure::VTDRVehicleConfigure() :
+		cDataCode(StateConfig)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 VTDRVehicleConfigure::~VTDRVehicleConfigure()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 int VTDRVehicleConfigure::Read(const char* buf)

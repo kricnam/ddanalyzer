@@ -7,13 +7,30 @@
 
 #ifndef USBDATAFILEV2012_H_
 #define USBDATAFILEV2012_H_
-
 #include <string>
+#include <list>
+#include <map>
+#include "VTDRRecord.h"
+#include "VTDRVersion.h"
+#include "VTDRDriverInfo.h"
+#include "VTDRRealTime.h"
+#include "VTDROderMeter.h"
+#include "VTDRPulseModulus.h"
+#include "VTDRVehicleInfo.h"
+#include "VTDRVehicleConfigure.h"
+#include "VTDRUniqCode.h"
+#include "VTDRSpeedRecord.h"
+#include "VTDRPositionRecord.h"
+#include "VTDRDetailRecord.h"
+#include "VTDROvertimeDriveRecord.h"
+#include "VTDRDriverIDRecord.h"
+#include "VTDROutPoweredRecord.h"
+#include "VTDRParameterModifyRecord.h"
+#include "VTDRSpeedStatusLog.h"
+
 
 using namespace std;
 
-namespace DataCenter
-{
 
 class USBDataFilev2012
 {
@@ -23,8 +40,12 @@ public:
 
 	bool ParseFileName(string& strFileName);
 	bool CheckSumOk(void);
-protected:
+	void PushData(VTDRRecord* ptrRecord);
+	void WriteToFile(const char* szFolder);
 
+protected:
+	string strPlateCode;
+	time_t tRecordTime;
 	typedef struct _USBDataBlock
 	{
 		unsigned char cDataCode;
@@ -34,7 +55,12 @@ protected:
 
 	unsigned short nDataBlockNumber;
 
+	list<VTDRRecord*> records;
+
+	static map<int,string>  DataBlockName ;
+	static void initMap() ;
+
 };
 
-} /* namespace DataCenter */
+
 #endif /* USBDATAFILEV2012_H_ */

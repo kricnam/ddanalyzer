@@ -8,9 +8,8 @@
 #include "VTDRVersion.h"
 
 VTDRVersion::VTDRVersion() :
-		year(2012), modify(0)
+		year(2012), modify(0),cDataCode(Version)
 {
-	// TODO Auto-generated constructor stub
 
 }
 

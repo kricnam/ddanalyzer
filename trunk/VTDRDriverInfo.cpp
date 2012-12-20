@@ -7,9 +7,9 @@
 
 #include "VTDRDriverInfo.h"
 
-VTDRDriverInfo::VTDRDriverInfo()
+VTDRDriverInfo::VTDRDriverInfo() :
+		cDataCode(VTDRRecord::CurrentDriver)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -21,7 +21,7 @@ VTDRDriverInfo::~VTDRDriverInfo()
 int VTDRDriverInfo::Read(const char* buf)
 {
 	DriverInfo* ptrInfo = (DriverInfo*) buf;
-	ASSIGN(strLicenseNumber,ptrInfo->license);
+	ASSIGN(strLicenseNumber, ptrInfo->license);
 	return sizeof(*ptrInfo);
 }
 
@@ -29,7 +29,7 @@ string& VTDRDriverInfo::Write(string& buf)
 {
 	DriverInfo info =
 	{ 0 };
-	SET(info.license,strLicenseNumber);
-	buf.append((const char*)&info,sizeof(info));
+	SET(info.license, strLicenseNumber);
+	buf.append((const char*) &info, sizeof(info));
 	return buf;
 }

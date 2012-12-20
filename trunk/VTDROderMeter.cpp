@@ -8,7 +8,7 @@
 #include "VTDROderMeter.h"
 
 VTDROderMeter::VTDROderMeter() :
-		tNow(0), tInstall(0), startMeter(0.0), sumMeter(0.0)
+		tNow(0), tInstall(0), startMeter(0.0), sumMeter(0.0), cDataCode(VTDRRecord::OderMeter)
 {
 	// TODO Auto-generated constructor stub
 

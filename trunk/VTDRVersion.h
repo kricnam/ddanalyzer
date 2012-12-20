@@ -8,8 +8,9 @@
 #ifndef VTDRVERSION_H_
 #define VTDRVERSION_H_
 #include <string>
+#include "VTDRRecord.h"
 using namespace std;
-class VTDRVersion
+class VTDRVersion:public VTDRRecord
 {
 public:
 	VTDRVersion();
@@ -18,6 +19,7 @@ public:
 	string& Write(string& buf);
 	int year;
 	int modify;
+
 protected:
 	typedef struct _Version
 	{

@@ -8,7 +8,7 @@
 #include "VTDRRealTime.h"
 
 VTDRRealTime::VTDRRealTime() :
-		tTime(0)
+		tTime(0),cDataCode(RealTime)
 {
 
 }

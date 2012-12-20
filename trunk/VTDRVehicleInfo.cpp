@@ -13,9 +13,9 @@ VTDRVehicleInfo::VTDRVehicleInfo()
 
 }
 
-VTDRVehicleInfo::~VTDRVehicleInfo()
+VTDRVehicleInfo::~VTDRVehicleInfo():
+		cDataCode(VehicleInfo)
 {
-	// TODO Auto-generated destructor stub
 }
 
 int VTDRVehicleInfo::Read(const char* buf)

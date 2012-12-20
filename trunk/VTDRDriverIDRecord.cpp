@@ -8,7 +8,7 @@
 #include "VTDRDriverIDRecord.h"
 
 VTDRDriverIDRecord::VTDRDriverIDRecord() :
-		tStart(0), cType(0)
+		tStart(0), cType(0),cDataCode(DriverInfo)
 {
 }
 

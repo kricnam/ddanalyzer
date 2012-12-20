@@ -8,7 +8,7 @@
 #include "VTDRPulseModulus.h"
 
 VTDRPulseModulus::VTDRPulseModulus() :
-		tTime(0), sModulus(0)
+		tTime(0), sModulus(0),cDataCode(VTDRRecord::PulseModulu)
 {
 }
 

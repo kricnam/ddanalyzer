@@ -11,27 +11,37 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
-
+#include <arpa/inet.h>
 using namespace std;
 
 #define SET(x,y) set(x,y,sizeof(x))
 #define ASSIGN(x,y) assign(x,y,sizeof(y))
 
-typedef struct _VTDRTime
-{
-	unsigned char bcdYear;
-	unsigned char bcdMonth;
-	unsigned char bcdDay;
-	unsigned char bcdHour;
-	unsigned char bcdMinute;
-	unsigned char bcdSecond;
-}__attribute__ ((packed)) VTDRTime;
+
 
 class VTDRRecord
 {
 public:
 	VTDRRecord();
 	virtual ~VTDRRecord();
+	unsigned char GetDataCode()
+	{
+		return (unsigned char)cDataCode;
+	}
+	;
+
+	typedef struct _VTDRTime
+	{
+		unsigned char bcdYear;
+		unsigned char bcdMonth;
+		unsigned char bcdDay;
+		unsigned char bcdHour;
+		unsigned char bcdMinute;
+		unsigned char bcdSecond;
+	}__attribute__ ((packed)) VTDRTime;
+
+	virtual int Read(const char* buf)=0;
+	virtual string& Write(string& buf)=0;
 	static string BCD2ASCII(string& strBCD);
 	static unsigned int BCD2INT(const char* bcd, int size);
 	static unsigned int BCD2INT(unsigned char bcd);
@@ -59,6 +69,25 @@ public:
 	}
 	;
 protected:
+	enum DataCode
+	{
+		Version = 0,
+		CurrentDriver,
+		RealTime,
+		OderMeter,
+		PulseModulu,
+		VehicleInfo,
+		StateConfig,
+		UniqCode,
+		SpeedRecord,
+		PositionRecord,
+		AccidentSuspectPoint = 0x10,
+		OverTimeDriving,
+		DriverInfo,
+		OutPowered,
+		ParameterModify,
+		SpeedStateLog
+	};
 	typedef struct _Position
 	{
 		int longititude;
@@ -66,18 +95,23 @@ protected:
 		short altitude;
 	}__attribute__ ((packed)) Position;
 
+
+
 	void readPosition(Position& pos, float& Long, float& Lat, int& Alt)
 	{
 		Long = ntohl(pos.longititude) / 10000.0;
 		Lat = ntohl(pos.latitude) / 10000.0;
 		Alt = ntohs(pos.altitude);
 	}
+	;
 	void writePosition(Position& pos, float Long, float Lat, int Alt)
 	{
 		pos.longititude = htonl((int) (Long * 10000.0));
 		pos.latitude = htonl((int) (Lat * 10000.0));
 		pos.altitude = htons(Alt);
 	}
+	;
+	DataCode cDataCode;
 };
 
 #endif /* VTDRRECORD_H_ */
