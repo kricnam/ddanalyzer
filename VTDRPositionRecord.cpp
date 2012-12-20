@@ -8,15 +8,14 @@
 #include "VTDRPositionRecord.h"
 
 VTDRPositionRecord::VTDRPositionRecord() :
-		tStart(0)
+		tStart(0),cDataCode(VTDRRecord::PositionRecord)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 VTDRPositionRecord::~VTDRPositionRecord()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 int VTDRPositionRecord::Read(const char* buf)

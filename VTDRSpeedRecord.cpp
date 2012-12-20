@@ -8,7 +8,7 @@
 #include "VTDRSpeedRecord.h"
 
 VTDRSpeedRecord::VTDRSpeedRecord() :
-		tStart(0)
+		tStart(0),cDataCode(VTDRRecord::SpeedRecord)
 {
 	Speed[60]=
 	{	0xFF};

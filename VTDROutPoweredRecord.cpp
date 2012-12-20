@@ -8,7 +8,7 @@
 #include "VTDROutPoweredRecord.h"
 
 VTDROutPoweredRecord::VTDROutPoweredRecord() :
-		tTime(0), cType(0)
+		tTime(0), cType(0), cDataCode(OutPowered)
 {
 	// TODO Auto-generated constructor stub
 

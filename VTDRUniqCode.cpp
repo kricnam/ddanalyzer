@@ -7,15 +7,14 @@
 
 #include "VTDRUniqCode.h"
 
-VTDRUniqCode::VTDRUniqCode()
+VTDRUniqCode::VTDRUniqCode():
+		cDataCode(UniqCode),nYear(2012),nMonth(12),nDay(21),nSerialNumber(0)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 VTDRUniqCode::~VTDRUniqCode()
 {
-	// TODO Auto-generated destructor stub
 }
 
 int VTDRUniqCode::Read(const char* buf)
@@ -38,13 +37,13 @@ string& VTDRUniqCode::Write(string& buf)
 	UniqCode code =
 	{ 0 };
 
-	SET(code.AuthrizedType,strAuthType);
-	SET(code.Manufacture,strManufacture);
-	code.bcdYear = INT2BCDchar(nYear-2000);
-	code.bcdMonth  = INT2BCDchar(nMonth);
+	SET(code.AuthrizedType, strAuthType);
+	SET(code.Manufacture, strManufacture);
+	code.bcdYear = INT2BCDchar(nYear - 2000);
+	code.bcdMonth = INT2BCDchar(nMonth);
 	code.bcdDay = INT2BCDchar(nDay);
 	code.SerialNumber = nSerialNumber;
 
-	buf.append((const char*)&code,sizeof(code));
+	buf.append((const char*) &code, sizeof(code));
 	return buf;
 }

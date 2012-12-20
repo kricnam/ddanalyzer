@@ -7,9 +7,8 @@
 
 #include "VTDRRecord.h"
 
-VTDRRecord::VTDRRecord()
+VTDRRecord::VTDRRecord():cDataCode(0)
 {
-	// TODO Auto-generated constructor stub
 
 }
 
