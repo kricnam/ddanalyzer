@@ -22,6 +22,26 @@ using namespace std;
 class VTDRRecord
 {
 public:
+	enum DataCode
+	{
+		Version = 0,
+		CurrentDriver,
+		RealTime,
+		OderMeter,
+		PulseModulu,
+		VehicleInfo,
+		StateConfig,
+		UniqCode,
+		SpeedRecord,
+		PositionRecord,
+		AccidentSuspectPoint = 0x10,
+		OverTimeDriving,
+		DriverInfo,
+		OutPowered,
+		ParameterModify,
+		SpeedStateLog
+	};
+
 	VTDRRecord();
 	virtual ~VTDRRecord();
 	unsigned char GetDataCode()
@@ -69,25 +89,7 @@ public:
 	}
 	;
 protected:
-	enum DataCode
-	{
-		Version = 0,
-		CurrentDriver,
-		RealTime,
-		OderMeter,
-		PulseModulu,
-		VehicleInfo,
-		StateConfig,
-		UniqCode,
-		SpeedRecord,
-		PositionRecord,
-		AccidentSuspectPoint = 0x10,
-		OverTimeDriving,
-		DriverInfo,
-		OutPowered,
-		ParameterModify,
-		SpeedStateLog
-	};
+
 	typedef struct _Position
 	{
 		int longititude;

@@ -55,7 +55,8 @@ protected:
 
 	unsigned short nDataBlockNumber;
 
-	list<VTDRRecord*> records;
+	typedef list<VTDRRecord*>  DataSet;
+	map<int,DataSet> Datas;
 
 	static map<int,string>  DataBlockName ;
 	static void initMap() ;
