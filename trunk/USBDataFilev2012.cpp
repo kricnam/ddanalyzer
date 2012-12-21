@@ -14,16 +14,46 @@ USBDataFilev2012::USBDataFilev2012() :
 {
 	strPlateCode = "未知车牌";
 	initMap();
+	PushData(new VTDRVersion());
 }
 
 USBDataFilev2012::~USBDataFilev2012()
 {
-	// TODO Auto-generated destructor stub
+	if (!Datas.empty())
+	{
+		map<int, DataSet>::iterator it;
+		for (it = Datas.begin(); it != Datas.end(); it++)
+		{
+			DataSet::iterator dit;
+			for (dit = it->second.begin(); dit != it->second.end(); dit++)
+			{
+				delete (*dit);
+			}
+			it->second.clear();
+		}
+	}
 }
 
 void USBDataFilev2012::PushData(VTDRRecord* ptrRecord)
 {
-	records.push_back(ptrRecord);
+	VTDRRecord::DataCode code = ptrRecord->GetDataCode();
+	if (Datas.count(code))
+	{
+		if (code < VTDRRecord::SpeedRecord)
+		{
+			delete Datas[code].front();
+			Datas[code].clear();
+			Datas[code].push_back(ptrRecord);
+		}
+		else
+			Datas[ptrRecord->GetDataCode()].push_back(ptrRecord);
+	}
+	else
+	{
+		DataSet records;
+		records.push_back(ptrRecord);
+		Datas[ptrRecord->GetDataCode()] = records;
+	}
 }
 
 void USBDataFilev2012::WriteToFile(const char* szFolder)
@@ -60,5 +90,4 @@ bool USBDataFilev2012::ParseFileName(string& strFileName)
 bool USBDataFilev2012::CheckSumOk(void)
 {
 }
-
 
