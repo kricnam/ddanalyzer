@@ -8,9 +8,9 @@
 #include "VTDRVersion.h"
 
 VTDRVersion::VTDRVersion() :
-		year(2012), modify(0),cDataCode(Version)
+		year(2012), modify(0)
 {
-
+	cDataCode = Version;
 }
 
 VTDRVersion::~VTDRVersion()

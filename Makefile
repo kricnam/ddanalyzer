@@ -11,5 +11,8 @@ $(TARGET):	$(OBJS)
 
 all:	$(TARGET)
 
+test: USB*.cpp VTDR*.cpp test.cpp
+	g++ -o test $^
+
 clean:
 	rm -f $(OBJS) $(TARGET)

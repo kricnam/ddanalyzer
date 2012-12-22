@@ -8,8 +8,9 @@
 #include "VTDRDriverIDRecord.h"
 
 VTDRDriverIDRecord::VTDRDriverIDRecord() :
-		tStart(0), cType(0),cDataCode(DriverInfo)
+		tStart(0), cType(0)
 {
+	cDataCode = VTDRRecord::DriverInfo;
 }
 
 VTDRDriverIDRecord::~VTDRDriverIDRecord()
@@ -30,9 +31,9 @@ string& VTDRDriverIDRecord::Write(string& buf)
 {
 	DriverIDRecord rec =
 	{ 0 };
-	ToBCDTime(tStart,rec.startTime);
-	SET(rec.License,strLicenseNumber);
+	ToBCDTime(tStart, rec.startTime);
+	SET(rec.License, strLicenseNumber);
 	rec.cType = cType;
-	buf.append((const char*)&rec,sizeof(rec));
+	buf.append((const char*) &rec, sizeof(rec));
 	return buf;
 }

@@ -46,15 +46,16 @@ public:
 protected:
 	string strPlateCode;
 	time_t tRecordTime;
+	string strFileName;
 	typedef struct _USBDataBlock
 	{
 		unsigned char cDataCode;
 		unsigned char cDataName[18];
 		unsigned int nDataLength;
-	} USBDataBlock;
+	} __attribute__ ((packed)) USBDataBlock;
 
 	unsigned short nDataBlockNumber;
-
+	void generateFileName();
 	typedef list<VTDRRecord*>  DataSet;
 	map<int,DataSet> Datas;
 

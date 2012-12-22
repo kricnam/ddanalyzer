@@ -8,10 +8,9 @@
 #include "VTDROutPoweredRecord.h"
 
 VTDROutPoweredRecord::VTDROutPoweredRecord() :
-		tTime(0), cType(0), cDataCode(OutPowered)
+		tTime(0), cType(0)
 {
-	// TODO Auto-generated constructor stub
-
+	cDataCode = OutPowered;
 }
 
 VTDROutPoweredRecord::~VTDROutPoweredRecord()
@@ -30,8 +29,8 @@ int VTDROutPoweredRecord::Read(const char* buf)
 string& VTDROutPoweredRecord::Write(string& buf)
 {
 	PowerLog log;
-	ToBCDTime(tTime,log.vTime);
+	ToBCDTime(tTime, log.vTime);
 	log.cType = cType;
-	buf.append((const char*)&log,sizeof(log));
+	buf.append((const char*) &log, sizeof(log));
 	return buf;
 }

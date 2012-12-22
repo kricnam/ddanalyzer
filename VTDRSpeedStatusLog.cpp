@@ -8,9 +8,9 @@
 #include "VTDRSpeedStatusLog.h"
 
 VTDRSpeedStatusLog::VTDRSpeedStatusLog() :
-		tStart(0), tEnd(0), Status(Normal), cDataCode(SpeedStateLog)
+		tStart(0), tEnd(0), Status(Normal)
 {
-
+	cDataCode = SpeedStateLog;
 }
 
 VTDRSpeedStatusLog::~VTDRSpeedStatusLog()
@@ -21,7 +21,7 @@ VTDRSpeedStatusLog::~VTDRSpeedStatusLog()
 int VTDRSpeedStatusLog::Read(const char* buf)
 {
 	SpeedStatusLog* ptrRec = (SpeedStatusLog*) buf;
-	Status = ptrRec->SpeedStatus;
+	Status = (eSpeedStatus)ptrRec->SpeedStatus;
 	tStart = ToSystime(ptrRec->StartTime);
 	tEnd = ToSystime(ptrRec->EndTime);
 	for (int i = 0; i < 60; i++)

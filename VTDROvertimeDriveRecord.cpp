@@ -9,9 +9,9 @@
 
 VTDROvertimeDriveRecord::VTDROvertimeDriveRecord() :
 		tStartTime(0), tEndTime(0), startLongititude(0.0), startLatitude(0.0), startAltitude(
-				0), endLogititude(0.0), endLatitude(0.0), endAltitude(0),cDataCode(OverTimeDriving)
+				0), endLogititude(0.0), endLatitude(0.0), endAltitude(0)
 {
-
+	cDataCode = OverTimeDriving;
 }
 
 VTDROvertimeDriveRecord::~VTDROvertimeDriveRecord()

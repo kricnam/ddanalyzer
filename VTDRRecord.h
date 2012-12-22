@@ -17,6 +17,15 @@ using namespace std;
 #define SET(x,y) set(x,y,sizeof(x))
 #define ASSIGN(x,y) assign(x,y,sizeof(y))
 
+typedef struct _VTDRTime
+{
+	unsigned char bcdYear;
+	unsigned char bcdMonth;
+	unsigned char bcdDay;
+	unsigned char bcdHour;
+	unsigned char bcdMinute;
+	unsigned char bcdSecond;
+}__attribute__ ((packed)) VTDRTime;
 
 
 class VTDRRecord
@@ -49,16 +58,6 @@ public:
 		return (unsigned char)cDataCode;
 	}
 	;
-
-	typedef struct _VTDRTime
-	{
-		unsigned char bcdYear;
-		unsigned char bcdMonth;
-		unsigned char bcdDay;
-		unsigned char bcdHour;
-		unsigned char bcdMinute;
-		unsigned char bcdSecond;
-	}__attribute__ ((packed)) VTDRTime;
 
 	virtual int Read(const char* buf)=0;
 	virtual string& Write(string& buf)=0;
