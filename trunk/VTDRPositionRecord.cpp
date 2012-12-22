@@ -8,9 +8,9 @@
 #include "VTDRPositionRecord.h"
 
 VTDRPositionRecord::VTDRPositionRecord() :
-		tStart(0),cDataCode(VTDRRecord::PositionRecord)
+		tStart(0)
 {
-
+	cDataCode = VTDRRecord::PositionRecord;
 }
 
 VTDRPositionRecord::~VTDRPositionRecord()

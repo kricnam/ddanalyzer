@@ -8,9 +8,9 @@
 #include "VTDRParameterModifyRecord.h"
 
 VTDRParameterModifyRecord::VTDRParameterModifyRecord() :
-		tTime(0), cType(0),cDataCode(ParameterModify)
+		tTime(0), cType(0)
 {
-
+	cDataCode = ParameterModify;
 }
 
 VTDRParameterModifyRecord::~VTDRParameterModifyRecord()

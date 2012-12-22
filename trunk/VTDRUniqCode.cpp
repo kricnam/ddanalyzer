@@ -7,10 +7,10 @@
 
 #include "VTDRUniqCode.h"
 
-VTDRUniqCode::VTDRUniqCode():
-		cDataCode(UniqCode),nYear(2012),nMonth(12),nDay(21),nSerialNumber(0)
+VTDRUniqCode::VTDRUniqCode() :
+		nYear(2012), nMonth(12), nDay(21), nSerialNumber(0)
 {
-
+	cDataCode = VTDRRecord::UniqCode;
 }
 
 VTDRUniqCode::~VTDRUniqCode()

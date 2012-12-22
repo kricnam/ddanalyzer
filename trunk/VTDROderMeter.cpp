@@ -8,15 +8,13 @@
 #include "VTDROderMeter.h"
 
 VTDROderMeter::VTDROderMeter() :
-		tNow(0), tInstall(0), startMeter(0.0), sumMeter(0.0), cDataCode(VTDRRecord::OderMeter)
+		tNow(0), tInstall(0), startMeter(0.0), sumMeter(0.0)
 {
-	// TODO Auto-generated constructor stub
-
+	cDataCode = VTDRRecord::OderMeter;
 }
 
 VTDROderMeter::~VTDROderMeter()
 {
-	// TODO Auto-generated destructor stub
 }
 
 int VTDROderMeter::Read(const char* buf)
@@ -41,18 +39,18 @@ string& VTDROderMeter::Write(string& buf)
 	int v = (int) (startMeter * 10.0);
 	for (int i = 0; i < sizeof(meter.startValue); i++)
 	{
-		meter.startValue[sizeof(meter.startValue)-i] = INT2BCDchar(v % 100);
+		meter.startValue[sizeof(meter.startValue) - i] = INT2BCDchar(v % 100);
 		v = v / 100;
 		if (v == 0)
 			break;
 	}
 	for (int i = 0; i < sizeof(meter.oderMeter); i++)
 	{
-		meter.oderMeter[sizeof(meter.startValue)-i] = INT2BCDchar(v % 100);
+		meter.oderMeter[sizeof(meter.startValue) - i] = INT2BCDchar(v % 100);
 		v = v / 100;
 		if (v == 0)
 			break;
 	}
-	buf.append((const char*)&meter,sizeof(meter));
+	buf.append((const char*) &meter, sizeof(meter));
 	return buf;
 }

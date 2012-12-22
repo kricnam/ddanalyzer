@@ -8,9 +8,9 @@
 #include "VTDRRealTime.h"
 
 VTDRRealTime::VTDRRealTime() :
-		tTime(0),cDataCode(RealTime)
+		tTime(0)
 {
-
+	cDataCode = RealTime;
 }
 
 VTDRRealTime::~VTDRRealTime()
@@ -28,7 +28,7 @@ string& VTDRRealTime::Write(string& buf)
 {
 	VTDRTime vTime =
 	{ 0 };
-	ToBCDTime(tTime,vTime);
-	buf.append((const char*)&vTime,sizeof(vTime));
+	ToBCDTime(tTime, vTime);
+	buf.append((const char*) &vTime, sizeof(vTime));
 	return buf;
 }

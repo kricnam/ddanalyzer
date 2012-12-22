@@ -13,7 +13,7 @@
 class VTDRSpeedStatusLog: public VTDRRecord
 {
 public:
-	enum SpeedStatus
+	enum eSpeedStatus
 	{
 		Normal = 0x01,Abnormal
 	};
@@ -22,7 +22,7 @@ public:
 	virtual ~VTDRSpeedStatusLog();
 	int Read(const char* buf);
 	string& Write(string& buf);
-	SpeedStatus Status;
+	eSpeedStatus Status;
 	time_t tStart;
 	time_t tEnd;
 	int recSpeed[60];

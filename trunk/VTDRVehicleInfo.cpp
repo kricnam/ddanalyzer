@@ -9,12 +9,10 @@
 
 VTDRVehicleInfo::VTDRVehicleInfo()
 {
-	// TODO Auto-generated constructor stub
-
+	cDataCode = VTDRRecord::VehicleInfo;
 }
 
-VTDRVehicleInfo::~VTDRVehicleInfo():
-		cDataCode(VehicleInfo)
+VTDRVehicleInfo::~VTDRVehicleInfo()
 {
 }
 

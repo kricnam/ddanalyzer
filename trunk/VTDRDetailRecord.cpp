@@ -8,10 +8,10 @@
 #include "VTDRDetailRecord.h"
 
 VTDRDetailRecord::VTDRDetailRecord() :
-		tEnd(0), Longititude(0.0), Latitude(0.0), Altitude(0), cDataCode(
-				AccidentSuspectPoint)
-{
+		tEnd(0), Longititude(0.0), Latitude(0.0), Altitude(0)
 
+{
+	cDataCode = AccidentSuspectPoint;
 }
 
 VTDRDetailRecord::~VTDRDetailRecord()

@@ -8,12 +8,13 @@
 #include "VTDRSpeedRecord.h"
 
 VTDRSpeedRecord::VTDRSpeedRecord() :
-		tStart(0),cDataCode(VTDRRecord::SpeedRecord)
+		tStart(0)
 {
 	Speed[60]=
 	{	0xFF};
 	State[60]=
 	{	0};
+	cDataCode = VTDRRecord::SpeedRecord;
 }
 
 VTDRSpeedRecord::~VTDRSpeedRecord()
@@ -43,6 +44,6 @@ string& VTDRSpeedRecord::Write(string& buf)
 		rec.record[i].speed = Speed[i];
 		rec.record[i].state = State[i];
 	}
-	buf.append((const char*)&rec,sizeof(rec));
+	buf.append((const char*) &rec, sizeof(rec));
 	return buf;
 }

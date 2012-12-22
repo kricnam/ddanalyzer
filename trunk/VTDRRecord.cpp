@@ -7,7 +7,7 @@
 
 #include "VTDRRecord.h"
 
-VTDRRecord::VTDRRecord():cDataCode(0)
+VTDRRecord::VTDRRecord():cDataCode(Version)
 {
 
 }

@@ -7,10 +7,10 @@
 
 #include "VTDRDriverInfo.h"
 
-VTDRDriverInfo::VTDRDriverInfo() :
-		cDataCode(VTDRRecord::CurrentDriver)
-{
+VTDRDriverInfo::VTDRDriverInfo()
 
+{
+	cDataCode = VTDRRecord::CurrentDriver;
 }
 
 VTDRDriverInfo::~VTDRDriverInfo()

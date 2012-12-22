@@ -7,10 +7,9 @@
 
 #include "VTDRVehicleConfigure.h"
 
-VTDRVehicleConfigure::VTDRVehicleConfigure() :
-		cDataCode(StateConfig)
+VTDRVehicleConfigure::VTDRVehicleConfigure()
 {
-
+	cDataCode = StateConfig;
 }
 
 VTDRVehicleConfigure::~VTDRVehicleConfigure()
