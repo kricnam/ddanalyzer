@@ -4,12 +4,14 @@
  *  Created on: Dec 9, 2012
  *      Author: mxx
  */
-
 #include "USBDataFilev2012.h"
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <iconv.h>
+#include "TraceLog.h"
+
 map<int, string> USBDataFilev2012::DataBlockName;
 
 USBDataFilev2012::USBDataFilev2012() :
@@ -37,7 +39,7 @@ USBDataFilev2012::~USBDataFilev2012()
 	}
 }
 
-void USBDataFilev2012::PushData(VTDRRecord* ptrRecord)
+VTDRRecord* USBDataFilev2012::PushData(VTDRRecord* ptrRecord)
 {
 	VTDRRecord::DataCode code = (VTDRRecord::DataCode) ptrRecord->GetDataCode();
 	if (Datas.count(code))
@@ -58,6 +60,7 @@ void USBDataFilev2012::PushData(VTDRRecord* ptrRecord)
 		records.push_back(ptrRecord);
 		Datas[ptrRecord->GetDataCode()] = records;
 	}
+	return ptrRecord;
 }
 
 void USBDataFilev2012::WriteToFile(const char* szFolder)
@@ -74,8 +77,10 @@ void USBDataFilev2012::WriteToFile(const char* szFolder)
 		USBDataBlock block =
 		{ 0 };
 		block.cDataCode = it->second.front()->GetDataCode();
-		it->second.front()->set(block.cDataName, DataBlockName[block.cDataCode],
+		string strName = DataBlockName[block.cDataCode];
+		utf8togb2312(strName.c_str(), strName.size(), (char*) block.cDataName,
 				sizeof(block.cDataName));
+
 		string strBlock;
 		for (data_set = it->second.begin(); data_set != it->second.end();
 				data_set++)
@@ -86,8 +91,9 @@ void USBDataFilev2012::WriteToFile(const char* szFolder)
 		buf.append((const char*) &block, sizeof(block));
 		buf.append(strBlock);
 	}
+	buf.append(1, checkSum(buf));
 
-	generateFileName();
+	GenerateFileName();
 	FILE* fp = fopen(strFileName.c_str(), "wb");
 	if (fp)
 	{
@@ -96,10 +102,10 @@ void USBDataFilev2012::WriteToFile(const char* szFolder)
 	}
 }
 
-void USBDataFilev2012::generateFileName()
+string& USBDataFilev2012::GenerateFileName()
 {
 	struct tm tmTime;
-	tRecordTime = (tRecordTime)?tRecordTime:time(NULL);
+	tRecordTime = (tRecordTime) ? tRecordTime : time(NULL);
 	localtime_r(&tRecordTime, &tmTime);
 	char buf[64] =
 	{ 0 };
@@ -107,6 +113,7 @@ void USBDataFilev2012::generateFileName()
 			tmTime.tm_mon + 1, tmTime.tm_mday, tmTime.tm_hour, tmTime.tm_min,
 			strPlateCode.c_str());
 	strFileName = buf;
+	return strFileName;
 }
 
 void USBDataFilev2012::initMap()
@@ -132,11 +139,134 @@ void USBDataFilev2012::initMap()
 	}
 }
 
-bool USBDataFilev2012::ParseFileName(string& strFileName)
+bool USBDataFilev2012::ParseFile(string& strFileName)
 {
+
 }
 
 bool USBDataFilev2012::CheckSumOk(void)
 {
 }
 
+int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,
+		char *destbuf, size_t destlen)
+{
+	iconv_t cd;
+	if ((cd = iconv_open("gb2312", "utf-8")) == 0)
+		return -1;
+	memset(destbuf, 0, destlen);
+	char **source = (char**) &sourcebuf;
+	char **dest = &destbuf;
+
+	if (-1 == iconv(cd, source, &sourcelen, dest, &destlen))
+		return -1;
+	iconv_close(cd);
+	return 0;
+
+}
+
+int USBDataFilev2012::gb2312toutf8(const char *sourcebuf, size_t sourcelen,
+		char *destbuf, size_t destlen)
+{
+	iconv_t cd;
+	if ((cd = iconv_open("utf-8", "gb2312")) == 0)
+		return -1;
+	memset(destbuf, 0, destlen);
+	char **source = (char**) &sourcebuf;
+	char **dest = &destbuf;
+
+	if (-1 == iconv(cd, source, &sourcelen, dest, &destlen))
+		return -1;
+	iconv_close(cd);
+	return 0;
+
+}
+
+bool USBDataFilev2012::ReadFromFile(const char* szFileName)
+{
+	FILE* fp = fopen(szFileName, "rb");
+	string strBuf;
+	if (fp)
+	{
+		char buf[10240];
+		int n = 0;
+		while (n = fread(buf, 1, sizeof(buf), fp))
+		{
+			strBuf.append(buf, n);
+		};
+		fclose(fp);
+	}
+
+	if (strBuf.size())
+		return parseFile(strBuf);
+	return false;
+}
+
+char USBDataFilev2012::checkSum(string& str)
+{
+	string::iterator it;
+	char sum = 0x00;
+
+	for (it = str.begin(); it != str.end(); it++)
+	{
+		sum ^= (*it);
+	}
+	return sum;
+}
+
+bool USBDataFilev2012::parseFile(string& str)
+{
+	if (checkSum(str))
+		return false;
+
+	int index = readFileHead(str);
+	int nFileBlock = nDataBlockNumber;
+	nDataBlockNumber = 0;
+	while (index < str.size())
+	{
+		index += readBlock(str, index);
+	};
+
+	return nDataBlockNumber == nFileBlock;
+}
+
+int USBDataFilev2012::readFileHead(string& str)
+{
+	nDataBlockNumber = str[0] << 8 + str[1];
+	return 2;
+}
+
+int USBDataFilev2012::readBlock(string& str, int index)
+{
+	USBDataBlock* ptrBlock = (USBDataBlock*) (str.data() + index);
+	int nLength = ntohl(ptrBlock->nDataLength);
+	VTDRRecord* ptrRecord = NULL;
+	int n = 0;
+	while (nLength - n > 0)
+	{
+		ptrRecord = generateRecord((VTDRRecord::DataCode) ptrBlock->cDataCode);
+		if (!ptrRecord)
+			break;
+		n += ptrRecord->Read(str.data() + sizeof(USBDataBlock) + index);
+		PushData(ptrRecord);
+	};
+
+	return nLength + sizeof(USBDataBlock);
+}
+
+VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
+{
+	VTDRRecord* ptrRecord = NULL;
+	switch (code)
+	{
+	case VTDRRecord::Version:
+		TRACE("Version");
+		ptrRecord = new VTDRVersion();
+		break;
+	case VTDRRecord::DriverInfo:
+		break;
+	default:
+		break;
+	}
+	return ptrRecord;
+}
