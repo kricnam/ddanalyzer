@@ -38,10 +38,12 @@ public:
 	USBDataFilev2012();
 	virtual ~USBDataFilev2012();
 
-	bool ParseFileName(string& strFileName);
+	bool ParseFile(string& strFileName);
 	bool CheckSumOk(void);
-	void PushData(VTDRRecord* ptrRecord);
+	VTDRRecord* PushData(VTDRRecord* ptrRecord);
 	void WriteToFile(const char* szFolder);
+	bool ReadFromFile(const char* szFileName);
+	string& GenerateFileName();
 
 protected:
 	string strPlateCode;
@@ -55,13 +57,20 @@ protected:
 	} __attribute__ ((packed)) USBDataBlock;
 
 	unsigned short nDataBlockNumber;
-	void generateFileName();
 	typedef list<VTDRRecord*>  DataSet;
 	map<int,DataSet> Datas;
 
 	static map<int,string>  DataBlockName ;
 	static void initMap() ;
-
+	static int utf8togb2312(const char *sourcebuf, size_t sourcelen, char *destbuf,
+			size_t destlen);
+	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen, char *destbuf,
+			size_t destlen);
+	static char checkSum(string& str);
+	bool parseFile(string& str);
+	int readFileHead(string& str);
+	int readBlock(string& str,int index);
+	VTDRRecord* generateRecord(VTDRRecord::DataCode code);
 };
 
 
