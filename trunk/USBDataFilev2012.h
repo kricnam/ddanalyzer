@@ -38,8 +38,7 @@ public:
 	USBDataFilev2012();
 	virtual ~USBDataFilev2012();
 
-	bool ParseFile(string& strFileName);
-	bool CheckSumOk(void);
+	bool ParseFileName(string& strFileName);
 	VTDRRecord* PushData(VTDRRecord* ptrRecord);
 	void WriteToFile(const char* szFolder);
 	bool ReadFromFile(const char* szFileName);

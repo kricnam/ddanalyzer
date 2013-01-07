@@ -139,14 +139,49 @@ void USBDataFilev2012::initMap()
 	}
 }
 
-bool USBDataFilev2012::ParseFile(string& strFileName)
+bool USBDataFilev2012::ParseFileName(string& strFileName)
 {
+	char* ptrDate = NULL;
+	char* ptrTime = NULL;
+	char* ptrNo = NULL;
+	tRecordTime = 0;
+	sscanf(strFileName.c_str(),"D%s_%s_%s.VDR",&ptrDate,&ptrTime,&ptrNo);
 
+	if (!ptrDate || !ptrTime || !ptrNo)
+		return false;
+
+	struct tm tmTime = {0};
+	string strTmp;
+	if (ptrDate)
+	{
+		strTmp.assign((const char*)ptrDate,2);
+		tmTime.tm_year = atoi(strTmp.c_str()) + 2000 -1900;
+		strTmp.assign((const char*)ptrDate+2,2);
+		tmTime.tm_mon = atoi(strTmp.c_str()) - 1;
+		strTmp.assign((const char*)ptrDate+2,2);
+		tmTime.tm_mday = atoi(strTmp.c_str()) ;
+		free(ptrDate);
+	}
+	if (ptrTime)
+	{
+		strTmp.assign(ptrTime,2);
+		tmTime.tm_hour = atoi(strTmp.c_str());
+		strTmp.assign(ptrTime+2,2);
+		tmTime.tm_min = atoi(strTmp.c_str());
+		tRecordTime = mktime(&tmTime);
+		free(ptrTime);
+	}
+
+	if (ptrNo)
+	{
+		strPlateCode.assign(ptrNo);
+		free(ptrNo);
+	}
+
+	return true;
 }
 
-bool USBDataFilev2012::CheckSumOk(void)
-{
-}
+
 
 int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,
 		char *destbuf, size_t destlen)

@@ -12,6 +12,7 @@
 #include <Wt/WLineEdit>
 #include <Wt/WPushButton>
 #include "Session.h"
+#include "USBFileContentView.h"
 using namespace Wt;
 
 namespace DataCenter
@@ -30,6 +31,7 @@ protected:
 	WContainerWidget *result;
 	WFileUpload* ptrUpload;
 	WPushButton *button;
+	USBFileContentView* pView;
 };
 
 } /* namespace DataCenter */
