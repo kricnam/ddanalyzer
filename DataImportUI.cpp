@@ -12,6 +12,7 @@
 #include <Wt/WProgressBar>
 #include <Wt/WLineEdit>
 #include <Wt/WAnimation>
+
 using namespace Wt;
 namespace DataCenter
 {
@@ -24,6 +25,7 @@ DataImportUI::DataImportUI(Session *session, Wt::WContainerWidget *parent) :
 	result = NULL;
 	button = NULL;
 	ptrUpload = NULL;
+	pView = NULL;
 }
 
 DataImportUI::~DataImportUI()
@@ -64,8 +66,12 @@ void DataImportUI::fileUploaded(void)
 	{
 		string strTmp = ptrUpload->spoolFileName();
 		new WText(strTmp, this);
+
+		new WText(ptrUpload->clientFileName(), this);
 		delete result;
 		result = NULL;
+		pView = new USBFileContentView(this);
+
 	}
 
 }
@@ -80,6 +86,7 @@ void DataImportUI::fileTooLarge(void)
 		new WText(strTmp, this);
 		delete result;
 		result = NULL;
+
 	}
 
 }
