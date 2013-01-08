@@ -253,8 +253,9 @@ bool USBDataFilev2012::parseFile(string& str)
 {
 	if (checkSum(str))
 		return false;
-
+	TRACE("check sum OK");
 	int index = readFileHead(str);
+	TRACE("Total %d Block",nDataBlockNumber);
 	int nFileBlock = nDataBlockNumber;
 	nDataBlockNumber = 0;
 	while (index < str.size())
@@ -275,6 +276,12 @@ int USBDataFilev2012::readBlock(string& str, int index)
 {
 	USBDataBlock* ptrBlock = (USBDataBlock*) (str.data() + index);
 	int nLength = ntohl(ptrBlock->nDataLength);
+	TRACE("block length %d",nLength);
+	if (nLength + index > str.size())
+	{
+		ERROR("bad block size");
+		throw USBDataFileException("bad block size");
+	}
 	VTDRRecord* ptrRecord = NULL;
 	int n = 0;
 	while (nLength - n > 0)
@@ -299,6 +306,7 @@ VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
 		ptrRecord = new VTDRVersion();
 		break;
 	case VTDRRecord::DriverInfo:
+		TRACE("DriverInfo");
 		break;
 	default:
 		break;

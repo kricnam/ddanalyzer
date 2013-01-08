@@ -61,6 +61,7 @@ public:
 
 	virtual int Read(const char* buf)=0;
 	virtual string& Write(string& buf)=0;
+
 	static string BCD2ASCII(string& strBCD);
 	static unsigned int BCD2INT(const char* bcd, int size);
 	static unsigned int BCD2INT(unsigned char bcd);
