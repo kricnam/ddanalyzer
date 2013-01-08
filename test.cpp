@@ -10,6 +10,8 @@ int main(int argc,const char** argv)
 	file.WriteToFile("./");
 	string& filename = file.GenerateFileName();
 	string fn = "./";
-	fn += filename;
+//	fn += filename;
+	fn = argv[1];
+	printf("Datafile %s",fn.c_str());
 	printf("read file %s %s\n",fn.c_str(),file.ReadFromFile(fn.c_str())?"OK":"Fail");
 }

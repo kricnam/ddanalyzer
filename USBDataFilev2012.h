@@ -27,10 +27,24 @@
 #include "VTDROutPoweredRecord.h"
 #include "VTDRParameterModifyRecord.h"
 #include "VTDRSpeedStatusLog.h"
-
+#include <exception>
 
 using namespace std;
 
+class USBDataFileException: public exception
+{
+public:
+	USBDataFileException(const char* szType) throw()
+	{
+		strType = szType;
+	}
+	;
+	~USBDataFileException() throw()
+	{
+	}
+	;
+	string strType;
+};
 
 class USBDataFilev2012
 {
@@ -53,24 +67,23 @@ protected:
 		unsigned char cDataCode;
 		unsigned char cDataName[18];
 		unsigned int nDataLength;
-	} __attribute__ ((packed)) USBDataBlock;
+	}__attribute__ ((packed)) USBDataBlock;
 
 	unsigned short nDataBlockNumber;
-	typedef list<VTDRRecord*>  DataSet;
-	map<int,DataSet> Datas;
+	typedef list<VTDRRecord*> DataSet;
+	map<int, DataSet> Datas;
 
-	static map<int,string>  DataBlockName ;
-	static void initMap() ;
-	static int utf8togb2312(const char *sourcebuf, size_t sourcelen, char *destbuf,
-			size_t destlen);
-	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen, char *destbuf,
-			size_t destlen);
+	static map<int, string> DataBlockName;
+	static void initMap();
+	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
+	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
 	static char checkSum(string& str);
 	bool parseFile(string& str);
 	int readFileHead(string& str);
-	int readBlock(string& str,int index);
+	int readBlock(string& str, int index);
 	VTDRRecord* generateRecord(VTDRRecord::DataCode code);
 };
-
 
 #endif /* USBDATAFILEV2012_H_ */
