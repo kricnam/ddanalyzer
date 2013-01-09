@@ -33,3 +33,10 @@ string& VTDRDriverInfo::Write(string& buf)
 	buf.append((const char*) &info, sizeof(info));
 	return buf;
 }
+
+string& VTDRDriverInfo::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " License:" << strLicenseNumber ;
+	return buf = stream.str();
+};

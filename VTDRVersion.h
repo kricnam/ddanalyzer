@@ -17,6 +17,7 @@ public:
 	virtual ~VTDRVersion();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 	int year;
 	int modify;
 

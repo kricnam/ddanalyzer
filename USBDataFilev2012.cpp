@@ -145,28 +145,29 @@ bool USBDataFilev2012::ParseFileName(string& strFileName)
 	char* ptrTime = NULL;
 	char* ptrNo = NULL;
 	tRecordTime = 0;
-	sscanf(strFileName.c_str(),"D%s_%s_%s.VDR",&ptrDate,&ptrTime,&ptrNo);
+	sscanf(strFileName.c_str(), "D%s_%s_%s.VDR", &ptrDate, &ptrTime, &ptrNo);
 
 	if (!ptrDate || !ptrTime || !ptrNo)
 		return false;
 
-	struct tm tmTime = {0};
+	struct tm tmTime =
+	{ 0 };
 	string strTmp;
 	if (ptrDate)
 	{
-		strTmp.assign((const char*)ptrDate,2);
-		tmTime.tm_year = atoi(strTmp.c_str()) + 2000 -1900;
-		strTmp.assign((const char*)ptrDate+2,2);
+		strTmp.assign((const char*) ptrDate, 2);
+		tmTime.tm_year = atoi(strTmp.c_str()) + 2000 - 1900;
+		strTmp.assign((const char*) ptrDate + 2, 2);
 		tmTime.tm_mon = atoi(strTmp.c_str()) - 1;
-		strTmp.assign((const char*)ptrDate+2,2);
-		tmTime.tm_mday = atoi(strTmp.c_str()) ;
+		strTmp.assign((const char*) ptrDate + 2, 2);
+		tmTime.tm_mday = atoi(strTmp.c_str());
 		free(ptrDate);
 	}
 	if (ptrTime)
 	{
-		strTmp.assign(ptrTime,2);
+		strTmp.assign(ptrTime, 2);
 		tmTime.tm_hour = atoi(strTmp.c_str());
-		strTmp.assign(ptrTime+2,2);
+		strTmp.assign(ptrTime + 2, 2);
 		tmTime.tm_min = atoi(strTmp.c_str());
 		tRecordTime = mktime(&tmTime);
 		free(ptrTime);
@@ -180,8 +181,6 @@ bool USBDataFilev2012::ParseFileName(string& strFileName)
 
 	return true;
 }
-
-
 
 int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,
 		char *destbuf, size_t destlen)
@@ -252,8 +251,7 @@ char USBDataFilev2012::checkSum(string& str)
 bool USBDataFilev2012::parseFile(string& str)
 {
 	if (checkSum(str))
-		return false;
-	TRACE("check sum OK");
+		return false; TRACE("check sum OK");
 	int index = readFileHead(str);
 	TRACE("Total %d Block",nDataBlockNumber);
 	int nFileBlock = nDataBlockNumber;
@@ -268,7 +266,8 @@ bool USBDataFilev2012::parseFile(string& str)
 
 int USBDataFilev2012::readFileHead(string& str)
 {
-	nDataBlockNumber = str[0] << 8 + str[1];
+	nDataBlockNumber = str[0];
+	nDataBlockNumber = (nDataBlockNumber << 8) + str[1];
 	return 2;
 }
 
@@ -276,13 +275,18 @@ int USBDataFilev2012::readBlock(string& str, int index)
 {
 	USBDataBlock* ptrBlock = (USBDataBlock*) (str.data() + index);
 	int nLength = ntohl(ptrBlock->nDataLength);
-	TRACE("block length %d",nLength);
+	TRACE("block length %d, code %d",nLength,ptrBlock->cDataCode);
 	if (nLength + index > str.size())
 	{
 		ERROR("bad block size");
 		throw USBDataFileException("bad block size");
 	}
 	VTDRRecord* ptrRecord = NULL;
+	char szBlockName[64] =
+	{ 0 };
+	gb2312toutf8((const char*) ptrBlock->cDataName, sizeof(ptrBlock->cDataName),
+			szBlockName, 64);
+	TRACE("blockName:%s",szBlockName);
 	int n = 0;
 	while (nLength - n > 0)
 	{
@@ -290,6 +294,14 @@ int USBDataFilev2012::readBlock(string& str, int index)
 		if (!ptrRecord)
 			break;
 		n += ptrRecord->Read(str.data() + sizeof(USBDataBlock) + index);
+		if ((nLength - n) < 0)
+		{
+			ERROR("bad data size");
+			throw USBDataFileException("bad data size");
+		}
+		string buf;
+		ptrRecord->Dump(buf);
+		TRACE("%s",buf.c_str());
 		PushData(ptrRecord);
 	};
 
@@ -305,8 +317,17 @@ VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
 		TRACE("Version");
 		ptrRecord = new VTDRVersion();
 		break;
-	case VTDRRecord::DriverInfo:
-		TRACE("DriverInfo");
+	case VTDRRecord::CurrentDriver:
+		TRACE("CurrentDriver");
+		ptrRecord = new VTDRDriverInfo();
+		break;
+	case VTDRRecord::RealTime:
+		TRACE("RealTime");
+		ptrRecord = new VTDRRealTime();
+		break;
+	case VTDRRecord::OderMeter:
+		TRACE("RealTime");
+		ptrRecord = new VTDROderMeter();
 		break;
 	default:
 		break;
