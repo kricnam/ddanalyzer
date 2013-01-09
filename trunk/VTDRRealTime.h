@@ -17,6 +17,7 @@ public:
 	virtual ~VTDRRealTime();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 	time_t tTime;
 };
 

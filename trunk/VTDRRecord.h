@@ -8,6 +8,7 @@
 #ifndef VTDRRECORD_H_
 #define VTDRRECORD_H_
 #include <string>
+#include <sstream>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
@@ -61,13 +62,21 @@ public:
 
 	virtual int Read(const char* buf)=0;
 	virtual string& Write(string& buf)=0;
-
+	virtual string& Dump(string& buf)
+	{
+		stringstream stream(buf);
+		stream << "DataCode:" << cDataCode ;
+		buf =  stream.str();
+		return buf;
+	};
 	static string BCD2ASCII(string& strBCD);
 	static unsigned int BCD2INT(const char* bcd, int size);
 	static unsigned int BCD2INT(unsigned char bcd);
 	static char INT2BCDchar(int n);
 	static time_t ToSystime(VTDRTime& t);
 	static VTDRTime& ToBCDTime(time_t t, VTDRTime& tm);
+	static string Time2String(time_t t);
+
 	static float TenThoundthMinuteToMinute(int n)
 	{
 		return n / 10000.0;

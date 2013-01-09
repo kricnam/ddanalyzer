@@ -54,3 +54,13 @@ string& VTDROderMeter::Write(string& buf)
 	buf.append((const char*) &meter, sizeof(meter));
 	return buf;
 }
+
+string& VTDROderMeter::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Time:" << ctime(&tNow);
+	stream << " InstallTime:" << ctime(&tInstall);
+	stream << " StartMeter:" << startMeter;
+	stream << " AccumulateMeter:" << sumMeter;
+	return buf = stream.str();
+}

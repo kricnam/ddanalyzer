@@ -18,6 +18,7 @@ public:
 	virtual ~VTDRDriverInfo();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 
 	string strLicenseNumber;
 protected:

@@ -23,7 +23,9 @@ int VTDRVersion::Read(const char* buf)
 	if (buf)
 	{
 		VERSION* ptr = (VERSION*) buf;
-		year = 2000 + ((ptr->cYear & 0x0F0) >> 4) * 10 + (ptr->cYear) & 0x0F;
+		int i = ((ptr->cYear & 0x0F0) >> 4) * 10;
+		i += (ptr->cYear) & 0x0F;
+		year = 2000 + i ;
 		modify = ptr->cModi;
 		return sizeof(VERSION);
 	}
@@ -37,4 +39,11 @@ string& VTDRVersion::Write(string& buf)
 	version.cModi = (char) modify;
 	buf.append((const char*) &version, sizeof(version));
 	return buf;
+}
+
+string& VTDRVersion::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Year:" << year << " Modify:" << modify ;
+	return buf = stream.str();
 }

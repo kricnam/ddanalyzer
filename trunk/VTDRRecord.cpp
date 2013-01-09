@@ -7,7 +7,8 @@
 
 #include "VTDRRecord.h"
 
-VTDRRecord::VTDRRecord():cDataCode(Version)
+VTDRRecord::VTDRRecord() :
+		cDataCode(Version)
 {
 
 }
@@ -68,7 +69,7 @@ time_t VTDRRecord::ToSystime(VTDRTime& t)
 VTDRTime& VTDRRecord::ToBCDTime(time_t t, VTDRTime& tmBCD)
 {
 	struct tm tmVal;
-	localtime_r(&t,&tmVal);
+	localtime_r(&t, &tmVal);
 	tmBCD.bcdYear = INT2BCDchar(tmVal.tm_year + 1900 - 2000);
 	tmBCD.bcdMonth = INT2BCDchar(tmVal.tm_mon + 1);
 	tmBCD.bcdDay = INT2BCDchar(tmVal.tm_mday);
@@ -77,4 +78,16 @@ VTDRTime& VTDRRecord::ToBCDTime(time_t t, VTDRTime& tmBCD)
 	tmBCD.bcdSecond = INT2BCDchar(tmVal.tm_sec);
 
 	return tmBCD;
+}
+
+string VTDRRecord::Time2String(time_t t)
+{
+	struct tm tmVal;
+	localtime_r(&t, &tmVal);
+	char szTime[64] =
+	{ 0 };
+	sprintf(szTime, "%04d-%02d-%02d %02d:%02d:%02d", tmVal.tm_year + 1900,
+			tmVal.tm_mon + 1, tmVal.tm_mday, tmVal.tm_hour, tmVal.tm_min,
+			tmVal.tm_sec);
+	return string(szTime);
 }

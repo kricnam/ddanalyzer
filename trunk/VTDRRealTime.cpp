@@ -6,7 +6,7 @@
  */
 
 #include "VTDRRealTime.h"
-
+#include <time.h>
 VTDRRealTime::VTDRRealTime() :
 		tTime(0)
 {
@@ -31,4 +31,11 @@ string& VTDRRealTime::Write(string& buf)
 	ToBCDTime(tTime, vTime);
 	buf.append((const char*) &vTime, sizeof(vTime));
 	return buf;
+}
+
+string& VTDRRealTime::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Time:" << Time2String(tTime) ;
+	return buf = stream.str();
 }
