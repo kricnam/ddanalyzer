@@ -12,6 +12,7 @@ namespace DataCenter
 
 USBFileContentView::USBFileContentView(WContainerWidget *parent )
 {
+	new WText("FileContent",this);
 	pFileName = new WText(this);
 	pDriverInfo = new WText(this);
 }
