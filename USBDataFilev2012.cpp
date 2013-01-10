@@ -141,14 +141,11 @@ void USBDataFilev2012::initMap()
 
 bool USBDataFilev2012::ParseFileName(string& strFileName)
 {
-	char* ptrDate = NULL;
-	char* ptrTime = NULL;
-	char* ptrNo = NULL;
+	char ptrDate[32];
+	char ptrTime[32];
+	char ptrNo[32];
 	tRecordTime = 0;
-	sscanf(strFileName.c_str(), "D%s_%s_%s.VDR", &ptrDate, &ptrTime, &ptrNo);
-
-	if (!ptrDate || !ptrTime || !ptrNo)
-		return false;
+	sscanf(strFileName.c_str(), "D%s_%s_%s.VDR", ptrDate, ptrTime, ptrNo);
 
 	struct tm tmTime =
 	{ 0 };
@@ -161,7 +158,6 @@ bool USBDataFilev2012::ParseFileName(string& strFileName)
 		tmTime.tm_mon = atoi(strTmp.c_str()) - 1;
 		strTmp.assign((const char*) ptrDate + 2, 2);
 		tmTime.tm_mday = atoi(strTmp.c_str());
-		free(ptrDate);
 	}
 	if (ptrTime)
 	{
@@ -170,13 +166,11 @@ bool USBDataFilev2012::ParseFileName(string& strFileName)
 		strTmp.assign(ptrTime + 2, 2);
 		tmTime.tm_min = atoi(strTmp.c_str());
 		tRecordTime = mktime(&tmTime);
-		free(ptrTime);
 	}
 
 	if (ptrNo)
 	{
 		strPlateCode.assign(ptrNo);
-		free(ptrNo);
 	}
 
 	return true;
@@ -251,7 +245,7 @@ char USBDataFilev2012::checkSum(string& str)
 bool USBDataFilev2012::parseFile(string& str)
 {
 	if (checkSum(str))
-		return false; TRACE("check sum OK");
+		return false;TRACE("check sum OK");
 	int index = readFileHead(str);
 	TRACE("Total %d Block",nDataBlockNumber);
 	int nFileBlock = nDataBlockNumber;
@@ -326,8 +320,44 @@ VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
 		ptrRecord = new VTDRRealTime();
 		break;
 	case VTDRRecord::OderMeter:
-		TRACE("RealTime");
+		TRACE("OderMeter");
 		ptrRecord = new VTDROderMeter();
+		break;
+	case VTDRRecord::PulseModulu:
+		ptrRecord = new VTDRPulseModulus();
+		break;
+	case VTDRRecord::VehicleInfo:
+		ptrRecord = new VTDRVehicleInfo();
+		break;
+	case VTDRRecord::StateConfig:
+		ptrRecord = new VTDRVehicleConfigure();
+		break;
+	case VTDRRecord::UniqCode:
+		ptrRecord = new VTDRUniqCode();
+		break;
+	case VTDRRecord::SpeedRecord:
+		ptrRecord = new VTDRSpeedRecord();
+		break;
+	case VTDRRecord::PositionRecord:
+		ptrRecord = new VTDRPositionRecord();
+		break;
+	case VTDRRecord::AccidentSuspectPoint:
+		ptrRecord = new VTDRDetailRecord();
+		break;
+	case VTDRRecord::OverTimeDriving:
+		ptrRecord = new VTDROvertimeDriveRecord();
+		break;
+	case VTDRRecord::DriverInfo:
+		ptrRecord = new VTDRDriverInfo();
+		break;
+	case VTDRRecord::OutPowered:
+		ptrRecord = new VTDROutPoweredRecord();
+		break;
+	case VTDRRecord::ParameterModify:
+		ptrRecord = new VTDRParameterModifyRecord();
+		break;
+	case VTDRRecord::SpeedStateLog:
+		ptrRecord = new VTDRSpeedStatusLog();
 		break;
 	default:
 		break;

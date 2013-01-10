@@ -70,7 +70,8 @@ void DataImportUI::fileUploaded(void)
 		new WText(ptrUpload->clientFileName(), this);
 		delete result;
 		result = NULL;
-		pView = new USBFileContentView(this);
+		pView = new USBFileContentView();
+		addWidget(pView);
 
 	}
 
