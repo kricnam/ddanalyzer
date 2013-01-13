@@ -10,6 +10,7 @@
 
 #include <Wt/WContainerWidget>
 #include <Wt/WText>
+#include "USBDataFilev2012.h"
 using namespace Wt;
 namespace DataCenter
 {
@@ -20,8 +21,15 @@ public:
 	USBFileContentView(WContainerWidget *parent = 0);
 	virtual ~USBFileContentView();
 
+	void InitView(const char* szTmpFile,const char* szFileName);
+
+protected:
+
 	WText* pFileName;
 	WText* pDriverInfo;
+
+	USBDataFilev2012 file;
+
 };
 
 } /* namespace DataCenter */

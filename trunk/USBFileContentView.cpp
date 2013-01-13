@@ -22,4 +22,8 @@ USBFileContentView::~USBFileContentView()
 
 }
 
+void USBFileContentView::InitView(const char* szTmpFile, const char* szFileName)
+{
+}
+
 } /* namespace DataCenter */
