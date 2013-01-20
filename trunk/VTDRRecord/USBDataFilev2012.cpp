@@ -139,41 +139,58 @@ void USBDataFilev2012::initMap()
 	}
 }
 
-bool USBDataFilev2012::ParseFileName(string& strFileName)
+bool USBDataFilev2012::ParseFileName(const char* szFileName)
 {
-	char ptrDate[32];
-	char ptrTime[32];
-	char ptrNo[32];
+	struct stFileName
+	{
+		char prefix;
+		char year[2];
+		char month[2];
+		char day[2];
+		char sp1;
+		char hour[2];
+		char minute[2];
+		char sp2;
+		char plateNumber[8];
+		char sp3;
+		char ext[3];
+	} FileName, *pFileName;
 	tRecordTime = 0;
-	sscanf(strFileName.c_str(), "D%s_%s_%s.VDR", ptrDate, ptrTime, ptrNo);
+	if (!szFileName
+			|| utf8togb2312(szFileName, strlen(szFileName), (char*) &FileName,
+					sizeof(FileName)))
+		return false;
+
+	pFileName = &FileName;
 
 	struct tm tmTime =
 	{ 0 };
 	string strTmp;
-	if (ptrDate)
+
+	if (pFileName->prefix == 'D' && pFileName->sp1 == '_'
+			&& pFileName->sp2 == '_' && pFileName->sp3 == '.')
 	{
-		strTmp.assign((const char*) ptrDate, 2);
+
+		strTmp.assign((const char*) pFileName->year, 2);
 		tmTime.tm_year = atoi(strTmp.c_str()) + 2000 - 1900;
-		strTmp.assign((const char*) ptrDate + 2, 2);
+		strTmp.assign((const char*) pFileName->month, 2);
 		tmTime.tm_mon = atoi(strTmp.c_str()) - 1;
-		strTmp.assign((const char*) ptrDate + 2, 2);
+		strTmp.assign((const char*) pFileName->day, 2);
 		tmTime.tm_mday = atoi(strTmp.c_str());
-	}
-	if (ptrTime)
-	{
-		strTmp.assign(ptrTime, 2);
+		strTmp.assign(pFileName->hour, 2);
 		tmTime.tm_hour = atoi(strTmp.c_str());
-		strTmp.assign(ptrTime + 2, 2);
+		strTmp.assign(pFileName->minute, 2);
 		tmTime.tm_min = atoi(strTmp.c_str());
 		tRecordTime = mktime(&tmTime);
+
+		char plate[32];
+		gb2312toutf8(pFileName->plateNumber, sizeof(pFileName->plateNumber),
+				plate, sizeof(plate));
+		strPlateCode = plate;
+		return true;
 	}
 
-	if (ptrNo)
-	{
-		strPlateCode.assign(ptrNo);
-	}
-
-	return true;
+	return false;
 }
 
 int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,

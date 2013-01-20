@@ -64,17 +64,19 @@ void DataImportUI::fileUploaded(void)
 
 	if (result)
 	{
-		delete result;
 		result = NULL;
 
 		string strTmp = ptrUpload->spoolFileName();
+		log("trace") << strTmp;
 		new WText(strTmp, this);
-		string strFileName = ptrUpload->clientFileName();
-		pView = new USBFileContentView();
-		addWidget(pView);
-		pView->file.ParseFileName(strFileName);
-		pView->file.ReadFromFile(strTmp.c_str());
+		string strFileName = ptrUpload->clientFileName().toUTF8();
+		log("info") << strFileName;
+		pView = new USBFileContentView(this);
+		pView->InitView(strTmp.c_str(),strFileName.c_str());
 
+		delete result;
+		addWidget(pView);
+		result = NULL;
 	}
 
 }

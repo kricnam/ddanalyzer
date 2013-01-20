@@ -52,12 +52,15 @@ public:
 	USBDataFilev2012();
 	virtual ~USBDataFilev2012();
 
-	bool ParseFileName(string& strFileName);
+	bool ParseFileName(const char* szFileName);
 	VTDRRecord* PushData(VTDRRecord* ptrRecord);
 	void WriteToFile(const char* szFolder);
 	bool ReadFromFile(const char* szFileName);
 	string& GenerateFileName();
-
+	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
+	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
 protected:
 	string strPlateCode;
 	time_t tRecordTime;
@@ -75,10 +78,7 @@ protected:
 
 	static map<int, string> DataBlockName;
 	static void initMap();
-	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
-			char *destbuf, size_t destlen);
-	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen,
-			char *destbuf, size_t destlen);
+
 	static char checkSum(string& str);
 	bool parseFile(string& str);
 	int readFileHead(string& str);
