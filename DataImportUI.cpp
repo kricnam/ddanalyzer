@@ -7,7 +7,6 @@
 
 #include "DataImportUI.h"
 #include <Wt/WPushButton>
-#include <Wt/WText>
 #include <Wt/WFileUpload>
 #include <Wt/WProgressBar>
 #include <Wt/WLineEdit>
@@ -26,6 +25,7 @@ DataImportUI::DataImportUI(Session *session, Wt::WContainerWidget *parent) :
 	button = NULL;
 	ptrUpload = NULL;
 	pView = NULL;
+	ptrMessage = NULL;
 }
 
 DataImportUI::~DataImportUI()
@@ -48,7 +48,20 @@ void DataImportUI::update(void)
 void DataImportUI::uploadPrompt(void)
 {
 	if (result)
-		return;
+	{
+		delete result;
+		result = NULL;
+	}
+	if (pView)
+	{
+		delete pView;
+		pView = NULL;
+	}
+	if (ptrMessage)
+	{
+		delete ptrMessage;
+		ptrMessage = NULL;
+	}
 
 	button->setStyleClass("side-bar");
 	result = new WContainerWidget(this);
@@ -64,18 +77,20 @@ void DataImportUI::fileUploaded(void)
 
 	if (result)
 	{
-		result = NULL;
-
 		string strTmp = ptrUpload->spoolFileName();
-		log("trace") << strTmp;
-		new WText(strTmp, this);
 		string strFileName = ptrUpload->clientFileName().toUTF8();
-		log("info") << strFileName;
+
+		if (pView)
+		{
+			delete pView;
+			pView = NULL;
+		}
 		pView = new USBFileContentView(this);
 		pView->InitView(strTmp.c_str(),strFileName.c_str());
 
-		delete result;
 		addWidget(pView);
+
+		delete result;
 		result = NULL;
 	}
 
@@ -88,12 +103,10 @@ void DataImportUI::fileTooLarge(void)
 		WString strTmp = ptrUpload->clientFileName();
 		log("info") << strTmp;
 		strTmp += " too  large";
-		new WText(strTmp, this);
+		ptrMessage = new WText(strTmp, this);
 		delete result;
 		result = NULL;
-
 	}
-
 }
 
 } /* namespace DataCenter */
