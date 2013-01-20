@@ -1,14 +1,16 @@
-CXXFLAGS =	-O2 -ggdb -Wall -fmessage-length=0 -I/usr/local/include
+CXXFLAGS =	-O2 -ggdb -Wall -fmessage-length=0  -I./ -I./VTDRRecord -I/usr/local/include 
 
-OBJS =		analyzer.o HomeUI.o DataImportUI.o Session.o Worker.o USBFileContentView.o USBDataFilev2012.o
+RECORDS_OBJ = $(patsubst %.cpp, %.o, $(wildcard ./VTDRRecord/*.cpp))
 
-
+OBJS =		analyzer.o HomeUI.o DataImportUI.o Session.o Worker.o USBFileContentView.o $(RECORDS_OBJ)
 
 LIBS = -L/usr/local/lib/   -lboost_signals -lwt -lwthttp -lwtdbo -lboost_system -lcrypt -lwtdbosqlite3
 
 TARGET =	analyzer
 
-$(TARGET):	$(OBJS) VTDR*.cpp
+
+$(TARGET):	$(OBJS) $(RECORD_OBJ)
+	echo $(wildcard ./VTDRRecode/*.cpp)
 	$(CXX) -o $(TARGET) $^ $(LIBS)
 
 all:	$(TARGET)
