@@ -29,7 +29,6 @@ protected:
 			VTDRTime installTime;
 			unsigned char startValue[4];
 			unsigned char oderMeter[4];
-			char cType;
 		}__attribute__ ((packed)) OderMeter;
 };
 

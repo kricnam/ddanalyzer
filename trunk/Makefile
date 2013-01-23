@@ -1,4 +1,4 @@
-CXXFLAGS =	-O2 -ggdb -Wall -fmessage-length=0  -I./ -I./VTDRRecord -I/usr/local/include 
+CXXFLAGS =	-O0 -ggdb -Wall -D_TRACE_LOG_  -fmessage-length=0  -I./ -I../ -I./VTDRRecord -I/usr/local/include 
 
 RECORDS_OBJ = $(patsubst %.cpp, %.o, $(wildcard ./VTDRRecord/*.cpp))
 
@@ -15,8 +15,8 @@ $(TARGET):	$(OBJS) $(RECORD_OBJ)
 
 all:	$(TARGET)
 
-test: USB*2012*.cpp VTDR*.cpp test.cpp TraceLog.cpp
-	g++ -ggdb -o  test -D_TRACE_LOG_ $^
+test:  test.cpp TraceLog.cpp $(RECORDS_OBJ)
+	$(CXX)  -o  test -D_TRACE_LOG_  $(CXXFLAGS) $^
 
 clean:
 	rm -f $(OBJS) $(TARGET)
