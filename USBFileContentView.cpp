@@ -6,8 +6,9 @@
  */
 
 #include "USBFileContentView.h"
+#include <string>
 #include <Wt/WBreak>
-
+using namespace std;
 namespace DataCenter
 {
 
@@ -42,8 +43,7 @@ void USBFileContentView::InitView(const char* szTmpFile, const char* szFileName)
 	string strErr;
 	try
 	{
-		if (file.ReadFromFile(szTmpFile))
-			return;
+		file.ReadFromFile(szTmpFile);
 
 	} catch (USBDataFileException& e)
 	{

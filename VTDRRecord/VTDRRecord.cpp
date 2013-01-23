@@ -36,7 +36,7 @@ unsigned int VTDRRecord::BCD2INT(const char* bcd, int size)
 	{
 		char c = bcd[i];
 		v = v * 100;
-		v += (c >> 4) & 0x0F * 10 + (c & 0x0f);
+		v += ((c >> 4) & 0x0F) * 10 + (c & 0x0f);
 	}
 	return v;
 }

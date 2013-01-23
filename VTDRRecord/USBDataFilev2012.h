@@ -55,7 +55,7 @@ public:
 	bool ParseFileName(const char* szFileName);
 	VTDRRecord* PushData(VTDRRecord* ptrRecord);
 	void WriteToFile(const char* szFolder);
-	bool ReadFromFile(const char* szFileName);
+	void ReadFromFile(const char* szFileName);
 	string& GenerateFileName();
 	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
 			char *destbuf, size_t destlen);
@@ -76,13 +76,13 @@ protected:
 	typedef list<VTDRRecord*> DataSet;
 	map<int, DataSet> Datas;
 
-	static map<int, string> DataBlockName;
+	static map<int, const char*> DataBlockName;
 	static void initMap();
 
-	static char checkSum(string& str);
-	bool parseFile(string& str);
-	int readFileHead(string& str);
-	int readBlock(string& str, int index);
+	char checkSum(const string & str) const;
+	void parseFile(const string& str);
+	size_t readFileHead(const string& str);
+	size_t readBlock(const string& str, int index);
 	VTDRRecord* generateRecord(VTDRRecord::DataCode code);
 };
 

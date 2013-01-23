@@ -12,7 +12,7 @@
 #include <iconv.h>
 #include "TraceLog.h"
 
-map<int, string> USBDataFilev2012::DataBlockName;
+map<int, const char*> USBDataFilev2012::DataBlockName;
 
 USBDataFilev2012::USBDataFilev2012() :
 		tRecordTime(0), nDataBlockNumber(0)
@@ -99,7 +99,13 @@ void USBDataFilev2012::WriteToFile(const char* szFolder)
 	{
 		int n = fwrite((void*) buf.data(), 1, buf.size(), fp);
 		fclose(fp);
+		if (n != 1)
+		{
+			throw USBDataFileException("write fail");
+		}
+		return;
 	}
+	throw USBDataFileException("open file for write fail");
 }
 
 string& USBDataFilev2012::GenerateFileName()
@@ -203,7 +209,7 @@ int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,
 	char **source = (char**) &sourcebuf;
 	char **dest = &destbuf;
 
-	if (-1 == iconv(cd, source, &sourcelen, dest, &destlen))
+	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
 		return -1;
 	iconv_close(cd);
 	return 0;
@@ -220,14 +226,14 @@ int USBDataFilev2012::gb2312toutf8(const char *sourcebuf, size_t sourcelen,
 	char **source = (char**) &sourcebuf;
 	char **dest = &destbuf;
 
-	if (-1 == iconv(cd, source, &sourcelen, dest, &destlen))
+	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
 		return -1;
 	iconv_close(cd);
 	return 0;
 
 }
 
-bool USBDataFilev2012::ReadFromFile(const char* szFileName)
+void USBDataFilev2012::ReadFromFile(const char* szFileName)
 {
 	FILE* fp = fopen(szFileName, "rb");
 	string strBuf;
@@ -235,35 +241,46 @@ bool USBDataFilev2012::ReadFromFile(const char* szFileName)
 	{
 		char buf[10240];
 		int n = 0;
-		while (n = fread(buf, 1, sizeof(buf), fp))
+		do
 		{
-			strBuf.append(buf, n);
-		};
+			n = fread(buf, 1, sizeof(buf), fp);
+			TRACE("read %d bytes",n);
+			if (n)
+				strBuf.append(buf, n);
+		} while (n == sizeof(buf));
 		fclose(fp);
+	}
+	else
+	{
+		strBuf = "open file";
+		strBuf += szFileName;
+		strBuf += "fail";
+		throw USBDataFileException(strBuf.c_str());
 	}
 
 	if (strBuf.size())
-		return parseFile(strBuf);
-	return false;
+		 parseFile(strBuf);
+	else
+		TRACE("no data read");
 }
 
-char USBDataFilev2012::checkSum(string& str)
+char USBDataFilev2012::checkSum(const string& str) const
 {
-	string::iterator it;
 	char sum = 0x00;
-
-	for (it = str.begin(); it != str.end(); it++)
+	TRACE("");
+	for (string::const_iterator it = str.begin(); it != str.end(); it++)
 	{
 		sum ^= (*it);
 	}
 	return sum;
 }
 
-bool USBDataFilev2012::parseFile(string& str)
+void USBDataFilev2012::parseFile(const string& str)
 {
-	if (checkSum(str))
-		return false;TRACE("check sum OK");
-	int index = readFileHead(str);
+	if (!checkSum(str))
+		throw USBDataFileException("checksum error") ;
+	TRACE("Checksum OK");
+	size_t index = readFileHead(str);
 	TRACE("Total %d Block",nDataBlockNumber);
 	int nFileBlock = nDataBlockNumber;
 	nDataBlockNumber = 0;
@@ -272,20 +289,21 @@ bool USBDataFilev2012::parseFile(string& str)
 		index += readBlock(str, index);
 	};
 
-	return nDataBlockNumber == nFileBlock;
+	if (nDataBlockNumber != nFileBlock)
+		throw USBDataFileException("unmatched data blocks") ;
 }
 
-int USBDataFilev2012::readFileHead(string& str)
+size_t USBDataFilev2012::readFileHead(const string& str)
 {
 	nDataBlockNumber = str[0];
 	nDataBlockNumber = (nDataBlockNumber << 8) + str[1];
 	return 2;
 }
 
-int USBDataFilev2012::readBlock(string& str, int index)
+size_t USBDataFilev2012::readBlock(const string& str, int index)
 {
 	USBDataBlock* ptrBlock = (USBDataBlock*) (str.data() + index);
-	int nLength = ntohl(ptrBlock->nDataLength);
+	size_t nLength = (size_t)ntohl(ptrBlock->nDataLength);
 	TRACE("block length %d, code %d",nLength,ptrBlock->cDataCode);
 	if (nLength + index > str.size())
 	{
@@ -298,13 +316,13 @@ int USBDataFilev2012::readBlock(string& str, int index)
 	gb2312toutf8((const char*) ptrBlock->cDataName, sizeof(ptrBlock->cDataName),
 			szBlockName, 64);
 	TRACE("blockName:%s",szBlockName);
-	int n = 0;
-	while (nLength - n > 0)
+	size_t n = 0;
+	while (nLength > n)
 	{
 		ptrRecord = generateRecord((VTDRRecord::DataCode) ptrBlock->cDataCode);
 		if (!ptrRecord)
-			break;
-		n += ptrRecord->Read(str.data() + sizeof(USBDataBlock) + index);
+			throw USBDataFileException("generate record fail");
+		n += ptrRecord->Read(str.data() + sizeof(USBDataBlock) + index + n);
 		if ((nLength - n) < 0)
 		{
 			ERROR("bad data size");
@@ -312,7 +330,7 @@ int USBDataFilev2012::readBlock(string& str, int index)
 		}
 		string buf;
 		ptrRecord->Dump(buf);
-		TRACE("%s",buf.c_str());
+		TRACE("%d[%d]\n%s",n,nLength,buf.c_str());
 		PushData(ptrRecord);
 	};
 
