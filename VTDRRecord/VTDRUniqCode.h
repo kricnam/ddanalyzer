@@ -17,6 +17,7 @@ public:
 	virtual ~VTDRUniqCode();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 	string strManufacture;
 	string strAuthType;
 	int nYear;

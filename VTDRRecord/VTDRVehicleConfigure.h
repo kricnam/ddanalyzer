@@ -17,10 +17,15 @@ public:
 	virtual ~VTDRVehicleConfigure();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 	string strNameOf[8];
+	time_t tTime;
+	char cState;
 protected:
 	typedef struct _Config
 	{
+		VTDRTime vTime;
+		char cStataByte;
 		unsigned char NameOfD[8][10];
 	}__attribute__ ((packed)) Config;
 };

@@ -8,7 +8,9 @@
 #ifndef VTDRRECORD_H_
 #define VTDRRECORD_H_
 #include <string>
+#include <string.h>
 #include <sstream>
+#include <iostream>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
@@ -76,6 +78,10 @@ public:
 	static time_t ToSystime(VTDRTime& t);
 	static VTDRTime& ToBCDTime(time_t t, VTDRTime& tm);
 	static string Time2String(time_t t);
+	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
+	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen,
+			char *destbuf, size_t destlen);
 
 	static float TenThoundthMinuteToMinute(int n)
 	{

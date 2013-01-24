@@ -35,3 +35,12 @@ string& VTDRPulseModulus::Write(string& buf)
 	buf.append((const char*) &mod, sizeof(mod));
 	return buf;
 }
+
+string& VTDRPulseModulus::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Time:" << ctime(&tTime);
+	stream << "param:" << sModulus;
+
+	return buf = stream.str();
+}
