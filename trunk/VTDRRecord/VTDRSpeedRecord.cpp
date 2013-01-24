@@ -10,10 +10,6 @@
 VTDRSpeedRecord::VTDRSpeedRecord() :
 		tStart(0)
 {
-	Speed[60]=
-	{	0xFF};
-	State[60]=
-	{	0};
 	cDataCode = VTDRRecord::SpeedRecord;
 }
 

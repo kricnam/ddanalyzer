@@ -17,6 +17,7 @@ public:
 	virtual ~VTDRVehicleInfo();
 	int Read(const char* buf);
 	string& Write(string& buf);
+	string& Dump(string& buf);
 	string strTypeCode;
 	string strPlateNumber;
 	string strPlateClass;

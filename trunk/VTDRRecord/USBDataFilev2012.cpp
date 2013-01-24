@@ -19,7 +19,6 @@ USBDataFilev2012::USBDataFilev2012() :
 {
 	strPlateCode = "未知车牌";
 	initMap();
-	PushData(new VTDRVersion());
 }
 
 USBDataFilev2012::~USBDataFilev2012()
@@ -56,6 +55,7 @@ VTDRRecord* USBDataFilev2012::PushData(VTDRRecord* ptrRecord)
 	else
 	{
 		nDataBlockNumber++;
+		TRACE("block count %d",nDataBlockNumber);
 		DataSet records;
 		records.push_back(ptrRecord);
 		Datas[ptrRecord->GetDataCode()] = records;
@@ -277,20 +277,22 @@ char USBDataFilev2012::checkSum(const string& str) const
 
 void USBDataFilev2012::parseFile(const string& str)
 {
-	if (!checkSum(str))
+	if (checkSum(str))
 		throw USBDataFileException("checksum error") ;
 	TRACE("Checksum OK");
 	size_t index = readFileHead(str);
 	TRACE("Total %d Block",nDataBlockNumber);
 	int nFileBlock = nDataBlockNumber;
 	nDataBlockNumber = 0;
-	while (index < str.size())
+	while (index < (str.size()-1))
 	{
 		index += readBlock(str, index);
 	};
-
+	TRACE("total read %d blocks",nDataBlockNumber);
 	if (nDataBlockNumber != nFileBlock)
+	{
 		throw USBDataFileException("unmatched data blocks") ;
+	}
 }
 
 size_t USBDataFilev2012::readFileHead(const string& str)
@@ -320,17 +322,24 @@ size_t USBDataFilev2012::readBlock(const string& str, int index)
 	while (nLength > n)
 	{
 		ptrRecord = generateRecord((VTDRRecord::DataCode) ptrBlock->cDataCode);
+
 		if (!ptrRecord)
+		{
 			throw USBDataFileException("generate record fail");
+		}
+
 		n += ptrRecord->Read(str.data() + sizeof(USBDataBlock) + index + n);
-		if ((nLength - n) < 0)
+		TRACE("Read:%d[Def:%d]",n,nLength);
+
+		if (nLength  < n)
 		{
 			ERROR("bad data size");
-			throw USBDataFileException("bad data size");
+			//throw USBDataFileException("bad data size");
 		}
+
 		string buf;
 		ptrRecord->Dump(buf);
-		TRACE("%d[%d]\n%s",n,nLength,buf.c_str());
+		TRACE("\n%s",buf.c_str());
 		PushData(ptrRecord);
 	};
 
@@ -371,6 +380,7 @@ VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
 		ptrRecord = new VTDRUniqCode();
 		break;
 	case VTDRRecord::SpeedRecord:
+		TRACE("SpeedRecord");
 		ptrRecord = new VTDRSpeedRecord();
 		break;
 	case VTDRRecord::PositionRecord:

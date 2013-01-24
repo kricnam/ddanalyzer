@@ -6,7 +6,7 @@
  */
 
 #include "VTDRRecord.h"
-
+#include <iconv.h>
 VTDRRecord::VTDRRecord() :
 		cDataCode(Version)
 {
@@ -90,4 +90,38 @@ string VTDRRecord::Time2String(time_t t)
 			tmVal.tm_mon + 1, tmVal.tm_mday, tmVal.tm_hour, tmVal.tm_min,
 			tmVal.tm_sec);
 	return string(szTime);
+}
+
+int VTDRRecord::utf8togb2312(const char *sourcebuf, size_t sourcelen,
+		char *destbuf, size_t destlen)
+{
+	iconv_t cd;
+	if ((cd = iconv_open("gb2312", "utf-8")) == 0)
+		return -1;
+	memset(destbuf, 0, destlen);
+	char **source = (char**) &sourcebuf;
+	char **dest = &destbuf;
+
+	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
+		return -1;
+	iconv_close(cd);
+	return 0;
+
+}
+
+int VTDRRecord::gb2312toutf8(const char *sourcebuf, size_t sourcelen,
+		char *destbuf, size_t destlen)
+{
+	iconv_t cd;
+	if ((cd = iconv_open("utf-8", "gb2312")) == 0)
+		return -1;
+	memset(destbuf, 0, destlen);
+	char **source = (char**) &sourcebuf;
+	char **dest = &destbuf;
+
+	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
+		return -1;
+	iconv_close(cd);
+	return 0;
+
 }

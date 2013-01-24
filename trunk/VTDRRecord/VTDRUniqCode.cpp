@@ -47,3 +47,11 @@ string& VTDRUniqCode::Write(string& buf)
 	buf.append((const char*) &code, sizeof(code));
 	return buf;
 }
+
+string& VTDRUniqCode::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << endl;
+	stream << "SN:" << nSerialNumber << endl;
+	return buf = stream.str();
+}
