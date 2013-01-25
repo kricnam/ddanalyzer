@@ -37,3 +37,12 @@ string& VTDRDriverIDRecord::Write(string& buf)
 	buf.append((const char*) &rec, sizeof(rec));
 	return buf;
 }
+
+string& VTDRDriverIDRecord::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Time:" << Time2String(tStart) << endl;
+	stream << "LICIENCE:" << strLicenseNumber << endl;
+	stream << "Type:" << (int)cType ;
+	return buf = stream.str();
+}

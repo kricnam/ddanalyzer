@@ -18,7 +18,7 @@ public:
 	virtual ~VTDRDriverIDRecord();
 	int Read(const char* buf);
 	string& Write(string& buf);
-
+	string& Dump(string& buf);
 	time_t tStart;
 	string strLicenseNumber;
 	char cType;

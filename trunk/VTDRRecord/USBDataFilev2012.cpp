@@ -78,7 +78,7 @@ void USBDataFilev2012::WriteToFile(const char* szFolder)
 		{ 0 };
 		block.cDataCode = it->second.front()->GetDataCode();
 		string strName = DataBlockName[block.cDataCode];
-		utf8togb2312(strName.c_str(), strName.size(), (char*) block.cDataName,
+		VTDRRecord::utf8togb2312(strName.c_str(), strName.size(), (char*) block.cDataName,
 				sizeof(block.cDataName));
 
 		string strBlock;
@@ -163,7 +163,7 @@ bool USBDataFilev2012::ParseFileName(const char* szFileName)
 	} FileName, *pFileName;
 	tRecordTime = 0;
 	if (!szFileName
-			|| utf8togb2312(szFileName, strlen(szFileName), (char*) &FileName,
+			|| VTDRRecord::utf8togb2312(szFileName, strlen(szFileName), (char*) &FileName,
 					sizeof(FileName)))
 		return false;
 
@@ -190,7 +190,7 @@ bool USBDataFilev2012::ParseFileName(const char* szFileName)
 		tRecordTime = mktime(&tmTime);
 
 		char plate[32];
-		gb2312toutf8(pFileName->plateNumber, sizeof(pFileName->plateNumber),
+		VTDRRecord::gb2312toutf8(pFileName->plateNumber, sizeof(pFileName->plateNumber),
 				plate, sizeof(plate));
 		strPlateCode = plate;
 		return true;
@@ -199,39 +199,6 @@ bool USBDataFilev2012::ParseFileName(const char* szFileName)
 	return false;
 }
 
-int USBDataFilev2012::utf8togb2312(const char *sourcebuf, size_t sourcelen,
-		char *destbuf, size_t destlen)
-{
-	iconv_t cd;
-	if ((cd = iconv_open("gb2312", "utf-8")) == 0)
-		return -1;
-	memset(destbuf, 0, destlen);
-	char **source = (char**) &sourcebuf;
-	char **dest = &destbuf;
-
-	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
-		return -1;
-	iconv_close(cd);
-	return 0;
-
-}
-
-int USBDataFilev2012::gb2312toutf8(const char *sourcebuf, size_t sourcelen,
-		char *destbuf, size_t destlen)
-{
-	iconv_t cd;
-	if ((cd = iconv_open("utf-8", "gb2312")) == 0)
-		return -1;
-	memset(destbuf, 0, destlen);
-	char **source = (char**) &sourcebuf;
-	char **dest = &destbuf;
-
-	if ((size_t) -1 == iconv(cd, source, &sourcelen, dest, &destlen))
-		return -1;
-	iconv_close(cd);
-	return 0;
-
-}
 
 void USBDataFilev2012::ReadFromFile(const char* szFileName)
 {
@@ -315,7 +282,7 @@ size_t USBDataFilev2012::readBlock(const string& str, int index)
 	VTDRRecord* ptrRecord = NULL;
 	char szBlockName[64] =
 	{ 0 };
-	gb2312toutf8((const char*) ptrBlock->cDataName, sizeof(ptrBlock->cDataName),
+	VTDRRecord::gb2312toutf8((const char*) ptrBlock->cDataName, sizeof(ptrBlock->cDataName),
 			szBlockName, 64);
 	TRACE("blockName:%s",szBlockName);
 	size_t n = 0;
@@ -393,7 +360,7 @@ VTDRRecord* USBDataFilev2012::generateRecord(VTDRRecord::DataCode code)
 		ptrRecord = new VTDROvertimeDriveRecord();
 		break;
 	case VTDRRecord::DriverInfo:
-		ptrRecord = new VTDRDriverInfo();
+		ptrRecord = new VTDRDriverIDRecord();
 		break;
 	case VTDRRecord::OutPowered:
 		ptrRecord = new VTDROutPoweredRecord();
