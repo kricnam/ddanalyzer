@@ -57,10 +57,7 @@ public:
 	void WriteToFile(const char* szFolder);
 	void ReadFromFile(const char* szFileName);
 	string& GenerateFileName();
-	static int utf8togb2312(const char *sourcebuf, size_t sourcelen,
-			char *destbuf, size_t destlen);
-	static int gb2312toutf8(const char *sourcebuf, size_t sourcelen,
-			char *destbuf, size_t destlen);
+
 protected:
 	string strPlateCode;
 	time_t tRecordTime;

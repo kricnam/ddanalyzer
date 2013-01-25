@@ -43,3 +43,20 @@ string& VTDRSpeedRecord::Write(string& buf)
 	buf.append((const char*) &rec, sizeof(rec));
 	return buf;
 }
+
+string& VTDRSpeedRecord::Dump(string& buf)
+{
+	stringstream stream;
+	stream << VTDRRecord::Dump(buf) << " Time:" << Time2String(tStart) << endl;
+	stream << "SPEED:";
+	for (int i = 0; i < 60; i++)
+	{
+		stream << Speed[i] << " ";
+	}
+	stream << endl << "STATE:";
+	for (int i = 0; i < 60; i++)
+	{
+		stream << State[i] << " ";
+	}
+	return buf = stream.str();
+}
