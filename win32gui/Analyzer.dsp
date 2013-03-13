@@ -100,23 +100,11 @@ SOURCE=.\Analyzer.rc
 # End Source File
 # Begin Source File
 
-SOURCE=.\AWSFactorDlg.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\AWSFile.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\Config.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\DataCollectionDlg.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\DataFile.cpp
 # End Source File
 # Begin Source File
 
@@ -136,11 +124,15 @@ SOURCE=.\MainDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Packet.cpp
+SOURCE=..\protocol\Packet.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\SelectList.cpp
+SOURCE=..\protocol\Protocol.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\protocol\RS232Port.cpp
 # End Source File
 # Begin Source File
 
@@ -148,7 +140,7 @@ SOURCE=.\SerialPort.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\shell.c
+SOURCE=..\sqlite3\shell.c
 # End Source File
 # Begin Source File
 
@@ -156,7 +148,7 @@ SOURCE=.\SpectrumDlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\sqlite3.c
+SOURCE=..\sqlite3\sqlite3.c
 # End Source File
 # Begin Source File
 
@@ -172,23 +164,11 @@ SOURCE=.\Analyzer.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\AWSFactorDlg.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\AWSFile.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Config.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\DataCollectionDlg.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\DataFile.h
 # End Source File
 # Begin Source File
 
@@ -208,7 +188,11 @@ SOURCE=.\MainDlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Packet.h
+SOURCE=..\protocol\Packet.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\protocol\Protocol.h
 # End Source File
 # Begin Source File
 
@@ -216,7 +200,7 @@ SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\SelectList.h
+SOURCE=..\protocol\RS232Port.h
 # End Source File
 # Begin Source File
 
@@ -228,11 +212,11 @@ SOURCE=.\SpectrumDlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\sqlite3.h
+SOURCE=..\sqlite3\sqlite3.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\sqlite3ext.h
+SOURCE=..\sqlite3\sqlite3ext.h
 # End Source File
 # Begin Source File
 
